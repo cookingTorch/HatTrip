@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.mapper.RecommandMapper">
+
+	<resultMap id="attractionMap" type="com.ssafy.dto.AttractionDto">
+		<result property="contentId" column="content_id" />
+		<result property="contentTypeId" column="content_type_id" />
+		<result property="title" column="title" />
+		<result property="addr1" column="addr1" />
+		<result property="addr2" column="addr2" />
+		<result property="zipCode" column="zipcode" />
+		<result property="tel" column="tel" />
+		<result property="imgUrl" column="first_image" />
+		<result property="sido" column="sido_code" />
+		<result property="gugun" column="gugun_code" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+	</resultMap>
+	
+	<!-- getAttListByWord. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getAttListByWord" resultType="com.ssafy.dto.AttractionDto" resultMap="attractionMap">
+		SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, latitude, longitude
+		FROM attraction_info
+		WHERE TITLE LIKE CONCAT('%',#{word},'%') OR addr1 LIKE CONCAT('%',#{word},'%') OR addr2 LIKE CONCAT('%',#{word},'%')
+		ORDER BY content_id
+	</select>
+
+</mapper>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.mapper.AttractionMapper">
+
+	<resultMap id="attractionMap" type="com.ssafy.dto.AttractionDto">
+		<result property="contentId" column="content_id" />
+		<result property="contentTypeId" column="content_type_id" />
+		<result property="title" column="title" />
+		<result property="addr1" column="addr1" />
+		<result property="addr2" column="addr2" />
+		<result property="zipCode" column="zipcode" />
+		<result property="tel" column="tel" />
+		<result property="imgUrl" column="first_image" />
+		<result property="sido" column="sido_code" />
+		<result property="gugun" column="gugun_code" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+	</resultMap>
+	
+	<resultMap id="searchMap" type="com.ssafy.dto.SearchDto">
+		<result property="sido" column="sido"/>
+		<result property="gugun" column="gugun"/>
+		<result property="type" column="type"/>
+	</resultMap>
+	
+	<resultMap id="sidoMap" type="com.ssafy.dto.SidoDto">
+		<result property="code" column="sido_code" />
+		<result property="name" column="sido_name" />
+	</resultMap>
+	
+	<resultMap id="gugunMap" type="com.ssafy.dto.GugunDto">
+		<result property="code" column="gugun_code" />
+		<result property="name" column="gugun_name" />
+	</resultMap>
+	
+	<!--
+	<resultMap id="planMap" type="com.ssafy.dto.PlanDto">
+		<result property="planNo" column="plan_no" />
+		<result property="userId" column="user_id" />
+		<result property="title" column="titles" />
+		<result property="address" column="addresses" />
+		<result property="latitude" column="latitudes" />
+		<result property="longitude" column="longitudes" />
+	</resultMap>
+	
+	<resultMap id="hotplaceMap" type="com.ssafy.dto.HotplaceDto">
+		<result property="place_name" column="place_name" />
+		<result property="userId" column="user_id" />
+		<result property="contentId" column="content_id" />
+		<result property="content" column="content" />
+		<result property="date" column="date" />
+	</resultMap>
+	-->
+	<!-- getAttListByParams. 조건에 따라 검색하는 쿼리 -->
+	<select id="getAttListByParams" parameterType="com.ssafy.dto.SearchDto"
+	resultType="com.ssafy.dto.AttractionDto" resultMap="attractionMap">
+		SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, latitude, longitude
+		FROM attraction_info
+		WHERE sido_code = #{sido} AND gugun_code = #{gugun}
+		<if test="type != -1">
+        	AND content_type_id = #{type}
+    	</if>
+	</select>
+
+	<!-- getSido. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getSido" resultType="com.ssafy.dto.SidoDto" resultMap="sidoMap">
+		SELECT *
+		FROM sido
+	</select>
+	
+	<!-- getGugun. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getGugun" resultType="com.ssafy.dto.GugunDto" resultMap="gugunMap">
+		SELECT gugun_code, gugun_name
+		FROM gugun
+		WHERE sido_code = #{sido_code}
+	</select>
+	
+	<select id="getAttListByPos" parameterType="com.ssafy.dto.PosDto"
+		resultType="com.ssafy.dto.AttractionDto" resultMap="attractionMap">
+		SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, latitude, longitude
+		FROM attraction_info
+		WHERE latitude between #{minLat} AND #{maxLat} 
+		AND longitude between #{minLon} AND #{maxLon};
+	</select>
+<!--
+	<insert id="save" parameterType="com.ssafy.dto.PlanDto">
+		INSERT INTO plan(user_id, titles, addresses, latitudes, longitudes)
+		VALUES(#{userId},
+		<foreach item="title" collection="array" open="'" separator="," close="'">
+		#{title}
+		</foreach>
+		, 
+		<foreach item="address" collection="array" open="'" separator="," close="'">
+		#{address}
+		</foreach>
+		, 
+		<foreach item="latitude" collection="array" open="'" separator="," close="'">
+		#{latitude}
+		</foreach>
+		, 
+		<foreach item="longitude" collection="array" open="'" separator="," close="'">
+		#{longitude}
+		</foreach>
+		)
+	</insert>
+
+	<select id="getPlan" resultType="com.ssafy.dto.PlanDto" resultMap="planMap">
+		SELECT *
+		FROM plan
+		WHERE user_id = #{userid}
+		ORDER BY plan_no DESC
+		LIMIT 1
+	</select>
+
+	<insert id="regist" parameterType="com.ssafy.dto.HotplaceDto">
+		INSERT INTO hotplace(user_id, place_name, content_id, content, date)
+		VALUES(#{userId}, #{place_name}, #{contentId}, #{content}, #{date})
+	</insert>
+	
+	<select id="getPlace" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
+		SELECT *
+		FROM hotplace
+		WHERE user_id = #{userid}
+		ORDER BY place_no DESC
+		LIMIT 1
+	</select>
+-->
+	<!-- getAdjListByRoute. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getAdjListByRoute" resultType="com.ssafy.dto.AttractionDto" resultMap="attractionMap">
+		SELECT 
+			a.content_id, 
+			a.content_type_id, 
+			a.title, 
+			a.addr1, 
+			a.addr2, 
+			a.zipcode, 
+			a.tel, 
+			a.first_image, 
+			a.latitude, 
+			a.longitude
+		FROM 
+			attraction_info a
+		INNER JOIN (
+			SELECT 
+				max(latitude) + 0.000000001 as maxlat, 
+				min(latitude) - 0.000000001 as minlat, 
+				max(longitude) + 0.000000001 as maxlong, 
+				min(longitude) - 0.000000001 as minlong
+			FROM 
+				attraction_info
+			WHERE 
+				content_id IN (#{startPlaceId}, #{endPlaceId})
+		) b ON a.latitude BETWEEN b.minlat AND b.maxlat 
+			AND a.longitude BETWEEN b.minlong AND b.maxlong;
+	</select>
+
+	<!-- getAttById. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getAttById" resultType="com.ssafy.dto.AttractionDto" resultMap="attractionMap">
+			SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, latitude, longitude
+			FROM attraction_info
+			WHERE content_id = #{id}
+	</select>
+</mapper>

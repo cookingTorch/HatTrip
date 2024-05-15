@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.mapper.BoardMapper">
+
+	<resultMap id="boardMap" type="com.ssafy.dto.BoardDto">
+		<result property="boardNo" column="board_no" />
+		<result property="userId" column="user_id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="hits" column="hits" />
+		<result property="createAt" column="create_at" />
+	</resultMap>
+	
+	<!-- writeArticle. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<insert id="writeArticle" parameterType="com.ssafy.dto.BoardDto">
+		INSERT INTO board (user_id, title, content, hits, create_at)
+		VALUES (#{userId}, #{title}, #{content}, 0, now())
+	</insert>
+	
+	<!-- listArticle. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="listArticle" resultType="com.ssafy.dto.BoardDto" resultMap="boardMap">
+		SELECT board_no, user_id, title, content, hits, create_at
+		FROM board
+		ORDER BY board_no DESC
+		LIMIT #{articlesPerPage} OFFSET #{offset}
+	</select>
+	
+	<!-- searchArticle. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="searchArticle" resultType="com.ssafy.dto.BoardDto" resultMap="boardMap">
+		SELECT board_no, user_id, title, content, hits, create_at
+		FROM board
+		WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+		ORDER BY board_no DESC
+		LIMIT #{articlesPerPage} OFFSET #{offset}
+	</select>
+	
+	<!-- countArticles. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="countArticles">
+		SELECT COUNT(*)
+		FROM board
+	</select>
+	
+	<!-- countSearchedArticles. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="countSearchedArticles">
+		SELECT COUNT(*)
+		FROM board
+		WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+
+	<!-- getArticle. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getArticle" resultType="com.ssafy.dto.BoardDto" resultMap="boardMap">
+		SELECT *
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+
+	<!-- updateHit. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<update id="updateHit">
+		UPDATE board
+		SET hits = hits + 1
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<!-- modifyArticle. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<update id="modifyArticle" parameterType="com.ssafy.dto.BoardDto">
+	    UPDATE board
+	    SET title = #{title}, content = #{content}
+	    WHERE board_no = #{boardNo}
+	</update>
+	
+	<!-- deleteArticle. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<delete id="deleteArticle">
+	    DELETE FROM board
+	    WHERE board_no = #{boardNo}
+	</delete>
+	
+</mapper>

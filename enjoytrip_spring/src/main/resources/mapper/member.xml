@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.mapper.MemberMapper">
+
+	<resultMap id="memberMap" type="com.ssafy.dto.MemberDto">
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="userPwd" column="user_password" />
+		<result property="email" column="email" />
+		<result property="joinDate" column="join_at" />
+		<result property="refreshToken" column="token" />
+	</resultMap>
+
+	<!-- joinMember. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<insert id="joinMember" parameterType="com.ssafy.dto.MemberDto">
+		INSERT INTO members(user_id, user_password, user_name, email, join_at)
+		VALUES(#{userId}, #{userPwd}, #{userName}, #{email}, NOW())
+	</insert>
+	
+	<!-- modifyMember. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<update id="modifyMember" parameterType="com.ssafy.dto.MemberDto">
+		UPDATE members
+		SET user_name = #{userName}, user_password = #{userPwd}, email = #{email}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- deleteMember. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<delete id="deleteMember">
+		DELETE FROM members
+		WHERE user_id = #{userId}
+	</delete>
+	
+	<!-- login. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="login" parameterType="com.ssafy.dto.MemberDto" resultType="com.ssafy.dto.MemberDto" resultMap="memberMap">
+		SELECT user_id, user_name, token
+		FROM members
+		WHERE user_id = #{userId} AND user_password = #{userPwd}
+	</select>
+	
+	<!-- saveRefreshToken. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<update id="saveRefreshToken" parameterType="map">
+		UPDATE members
+		SET token = #{token}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- getRefreshToken. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getRefreshToken" parameterType="map" resultType="string">
+		SELECT token
+		FROM members
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- deleteRefreshToken. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<update id="deleteRefreshToken" parameterType="map">
+		UPDATE members
+		SET token = #{token, jdbcType=VARCHAR}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- userInfo. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="userInfo" resultType="com.ssafy.dto.MemberDto" resultMap="memberMap">
+		SELECT *
+		FROM members
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- getUserIdByRefreshToken. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getUserIdByRefreshToken">
+		SELECT user_id
+		FROM members
+		WHERE token = #{refreshToken}
+	</select>
+
+</mapper>
