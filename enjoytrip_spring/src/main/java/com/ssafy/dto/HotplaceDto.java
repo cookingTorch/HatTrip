@@ -2,29 +2,57 @@ package com.ssafy.dto;
 
 public class HotplaceDto {
 
-	private String place_name;
+	private int hotplaceId;
 	private String userId;
-	private int contentId;
-	private String content;
-	private String date;
+	private int contentTypeId;
+	private String title;
+	private String addr1;
+	private String addr2;
+	private String tel;
+	private String imageSrc;
+	private int sidoCode;
+	private int gugunCode;
+	private double latitude;
+	private double longitude;
 	
-	public HotplaceDto() {}
+	public HotplaceDto() {
+	}
 
-	public HotplaceDto(String place_name, String userId, int contentId, String content, String date) {
+	public HotplaceDto(int hotplaceId, String userId, int contentTypeId, String title, String addr1, String addr2,
+			String tel, String imageSrc, int sidoCode, int gugunCode, double latitude, double longitude) {
 		super();
-		this.place_name = place_name;
+		this.hotplaceId = hotplaceId;
 		this.userId = userId;
-		this.contentId = contentId;
-		this.content = content;
-		this.date = date;
+		this.contentTypeId = contentTypeId;
+		this.title = title;
+		this.addr1 = addr1;
+		this.addr2 = addr2;
+		this.tel = tel;
+		this.imageSrc = imageSrc;
+		this.sidoCode = sidoCode;
+		this.gugunCode = gugunCode;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
-	public String getPlace_name() {
-		return place_name;
+	public HotplaceDto(String userId, int contentTypeId, String title, String addr1, String tel,
+			double latitude, double longitude) {
+		super();
+		this.userId = userId;
+		this.contentTypeId = contentTypeId;
+		this.title = title;
+		this.addr1 = addr1;
+		this.tel = tel;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
-	public void setPlace_name(String place_name) {
-		this.place_name = place_name;
+	public int getHotplaceId() {
+		return hotplaceId;
+	}
+
+	public void setHotplaceId(int hotplaceId) {
+		this.hotplaceId = hotplaceId;
 	}
 
 	public String getUserId() {
@@ -35,30 +63,84 @@ public class HotplaceDto {
 		this.userId = userId;
 	}
 
-	public int getContentId() {
-		return contentId;
+	public int getContentTypeId() {
+		return contentTypeId;
 	}
 
-	public void setContentId(int contentId) {
-		this.contentId = contentId;
+	public void setContentTypeId(int contentTypeId) {
+		this.contentTypeId = contentTypeId;
 	}
 
-	public String getContent() {
-		return content;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getDate() {
-		return date;
+	public String getAddr1() {
+		return addr1;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
 	}
-	
-	
-	
+
+	public String getAddr2() {
+		return addr2;
+	}
+
+	public void setAddr2(String addr2) {
+		this.addr2 = addr2;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getImageSrc() {
+		return imageSrc;
+	}
+
+	public void setImageSrc(String imageSrc) {
+		this.imageSrc = imageSrc;
+	}
+
+	public int getSidoCode() {
+		return sidoCode;
+	}
+
+	public void setSidoCode(int sidoCode) {
+		this.sidoCode = sidoCode;
+	}
+
+	public int getGugunCode() {
+		return gugunCode;
+	}
+
+	public void setGugunCode(int gugunCode) {
+		this.gugunCode = gugunCode;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
 }

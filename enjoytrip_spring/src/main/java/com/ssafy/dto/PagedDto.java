@@ -1,4 +1,4 @@
-package com.ssafy.controller;
+package com.ssafy.dto;
 
 import java.util.List;
 

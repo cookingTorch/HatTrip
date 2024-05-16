@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ssafy.controller.PagedDto;
 import com.ssafy.dto.BoardDto;
+import com.ssafy.dto.PagedDto;
 import com.ssafy.mapper.BoardMapper;
 
 @Service

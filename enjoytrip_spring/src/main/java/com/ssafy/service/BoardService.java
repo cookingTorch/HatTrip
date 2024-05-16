@@ -1,7 +1,7 @@
 package com.ssafy.service;
 
-import com.ssafy.controller.PagedDto;
 import com.ssafy.dto.BoardDto;
+import com.ssafy.dto.PagedDto;
 
 public interface BoardService {
 

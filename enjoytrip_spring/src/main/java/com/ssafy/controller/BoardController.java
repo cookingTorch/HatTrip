@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.dto.BoardDto;
+import com.ssafy.dto.PagedDto;
 import com.ssafy.service.BoardService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +49,7 @@ public class BoardController {
 		super();
 		this.boardService = boardService;
 	}
-
+	
 	@Operation(summary = "게시판 목록", description = "게시판 전체 목록 반환.")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "OK"),
@@ -73,7 +74,7 @@ public class BoardController {
         	return exceptionHandling(e);
         }
     }
-
+	
 	@Operation(summary = "게시판 검색", description = "게시판 키워드 검색")
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "OK"),
@@ -100,7 +101,7 @@ public class BoardController {
 	        return exceptionHandling(e);
 	    }
 	}
-
+	
 	@Operation(summary = "게시글 조회", description = "게시글 번호를 받아 해당 게시글을 조회")
 	@ApiResponses(value = { 
 	        @ApiResponse(responseCode = "200", description = "OK"),

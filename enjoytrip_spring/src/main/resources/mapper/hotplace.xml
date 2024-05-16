@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 UserRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.mapper.HotplaceMapper">
+
+	<resultMap id="hotplaceMap" type="com.ssafy.dto.HotplaceDto">
+		<result property="hotplaceId" column="hotplace_id" />
+		<result property="userId" column="user_id" />
+		<result property="contentTypeId" column="content_type_id" />
+		<result property="title" column="title" />
+		<result property="addr1" column="addr1" />
+		<result property="addr2" column="addr2" />
+		<result property="tel" column="tel" />
+		<result property="imageSrc" column="image_src" />
+		<result property="sidoCode" column="sido_code" />
+		<result property="gugunCode" column="gugun_code" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+	</resultMap>
+
+	<!-- getSidoCode. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getSidoCode">
+		SELECT sido_code
+		FROM sido
+		WHERE sido_name = #{sidoName}
+	</select>
+	
+	<!-- getGugunCode. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getGugunCode">
+		SELECT gugun_code
+		FROM gugun
+		WHERE sido_code = #{sidoCode}
+		AND gugun_name = #{gugunName}
+	</select>
+	
+	<!-- registHotplace. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<insert id="registHotplace" parameterType="com.ssafy.dto.HotplaceDto" useGeneratedKeys="true" keyProperty="hotplaceId">
+		INSERT INTO hotplace_info (user_id, content_type_id, title, addr1, tel, image_src, sido_code, gugun_code, latitude, longitude)
+		VALUES (#{userId}, #{contentTypeId}, #{title}, #{addr1}, #{tel}, #{imageSrc}, #{sidoCode}, #{gugunCode}, #{latitude}, #{longitude})
+	</insert>
+	
+	<!-- updateImageSrc. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<update id="updateImageSrc" parameterType="com.ssafy.dto.HotplaceDto">
+		UPDATE hotplace_info
+		SET image_src = #{imageSrc}
+		WHERE hotplace_id = #{hotplaceId}
+	</update>
+	
+	<!-- listHotplaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="listHotplaces" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
+		SELECT *
+		FROM hotplace_info
+		ORDER BY hotplace_id DESC
+		LIMIT #{placesPerPage} OFFSET #{offset}
+	</select>
+	
+	<!-- countHotplaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="countHotplaces">
+		SELECT COUNT(*)
+		FROM hotplace_info
+	</select>
+	
+	<!-- getHotplace. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getHotplace" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
+		SELECT *
+		FROM hotplace_info
+		WHERE hotplace_id = #{hotplaceId}
+	</select>
+	
+	<!-- deleteHotplace. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<delete id="deleteHotplace">
+	    DELETE FROM hotplace_info
+	    WHERE hotplace_id = #{hotplaceId}
+	</delete>
+	
+</mapper>
