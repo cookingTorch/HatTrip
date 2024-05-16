@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.mapper.PlanMapper">
+
+    <resultMap id="planMap" type="com.ssafy.dto.PlanDto">
+        <result property="planNo" column="plan_no" />
+        <result property="seqNo" column="seq_no" />
+        <result property="contentId" column="content_id" />
+    </resultMap>
+    
+    <resultMap id="planUserMap" type="com.ssafy.dto.PlanUserDto">
+        <result property="planNo" column="plan_no" />
+        <result property="userId" column="user_id" />
+    </resultMap>
+
+    <!-- 계획 추가 -->
+    <insert id="addPlan" parameterType="com.ssafy.dto.PlanDto">
+        INSERT INTO plan_seq (plan_no, seq_no, content_id)
+        VALUES (#{planNo}, #{seqNo}, #{contentId})
+    </insert>
+
+    <!-- 계획에 유저 추가 -->
+    <insert id="addPlanUser" parameterType="com.ssafy.dto.PlanUserDto">
+        INSERT INTO plan_user (plan_no, user_id)
+        VALUES (#{planNo}, #{userId})
+    </insert>
+
+    <!-- 계획 조회 -->
+    <select id="getPlan" resultMap="planMap">
+        SELECT plan_no, seq_no, content_id
+        FROM plan_seq
+        WHERE plan_no = #{planNo}
+        ORDER BY seq_no ASC
+    </select>
+
+    <!-- 계획 유저 조회 -->
+    <select id="getPlanUser" resultMap="planUserMap">
+        SELECT plan_no, user_id
+        FROM plan_user
+        WHERE plan_no = #{planNo}
+    </select>
+    
+    <!-- 삭제 -->
+    <delete id="deletePlan">
+        DELETE FROM plan_seq
+        WHERE plan_no = #{planNo}
+    </delete>
+    
+    <!-- 삭제 -->
+    <delete id="deletePlanUser">
+        DELETE FROM plan_user
+        WHERE plan_no = #{planNo}
+    </delete>
+
+    <!-- 마지막 plan_no 조회 -->
+    <select id="getLastIdx">
+		SELECT max(plan_no)+1
+		FROM plan_seq
+	</select>
+</mapper>

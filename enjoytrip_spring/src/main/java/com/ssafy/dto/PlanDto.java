@@ -3,75 +3,38 @@ package com.ssafy.dto;
 public class PlanDto {
 	
 	private int planNo;
-	private String userId;
-	private String[] title;
-	private String[] address;
-	private String[] latitude;
-	private String[] longitude;
-	public PlanDto() {
+	private int seqNo;
+	private int contentId;
+	
+	public PlanDto(int planNo, int seqNo, int contentId) {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public PlanDto(String userId, String[] title, String[] address, String[] latitude, String[] longitude) {
-		this.userId = userId;
-		this.title = title;
-		this.address = address;
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.planNo = planNo;
+		this.seqNo = seqNo;
+		this.contentId = contentId;
 	}
 
 	public int getPlanNo() {
 		return planNo;
 	}
+
 	public void setPlanNo(int planNo) {
 		this.planNo = planNo;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+
+	public int getSeqNo() {
+		return seqNo;
 	}
 
-	public String[] getTitle() {
-		return title;
+	public void setSeqNo(int seqNo) {
+		this.seqNo = seqNo;
 	}
 
-	public void setTitle(String[] title) {
-		this.title = title;
+	public int getContentId() {
+		return contentId;
 	}
 
-	public String[] getAddress() {
-		return address;
+	public void setContentId(int contentId) {
+		this.contentId = contentId;
 	}
-
-	public void setAddress(String[] address) {
-		this.address = address;
-	}
-
-	public String[] getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(String[] latitude) {
-		this.latitude = latitude;
-	}
-
-	public String[] getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(String[] longitude) {
-		this.longitude = longitude;
-	}
-
-	@Override
-	public String toString() {
-		return "PlanDto [planNo=" + planNo + ", userId=" + userId + ", title=" + title + ", address=" + address
-				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
-	}
-	
-
 	
 }

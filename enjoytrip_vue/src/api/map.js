@@ -11,6 +11,7 @@ const types = [
 ]
 
 const displayMarker = (positions, map) => {
+    
     var markers = [];
 
     var imgSrc = "https://velog.velcdn.com/images/gangintheremark/post/f43775aa-d206-423b-933b-615f374a8263/image.png";
