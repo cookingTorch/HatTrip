@@ -12,6 +12,7 @@ import MemberModify from '../views/user/MemberModify.vue'
 import AttractionInfo from '@/views/attraction/AttractionInfo.vue'
 import HotplaceRegister from '@/views/hotplace/HotplaceRegister.vue';
 import HotplaceView from '@/views/hotplace/HotplaceView.vue'
+import PlanView from '@/views/plan/PlanView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +71,11 @@ const router = createRouter({
       path: '/hotplace/regist',
       name: 'hotplaceRegister',
       component: HotplaceRegister
+    },
+    {
+      path: '/plan/view',
+      name: 'planView',
+      component: PlanView
     }
   ]
 });
