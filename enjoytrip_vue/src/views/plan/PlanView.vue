@@ -1,9 +1,9 @@
 <template>
-    <div class="travel-planner">
-      <div class="left-panel">
-        <!-- 여기에 지도 script가 들어갑니다 -->
+    <div class="travel-planner row">
+      <div class="col-md-6">
+        <MapContainer type="plan"/>
       </div>
-      <div class="right-panel">
+      <div class="col-md-6">
         <h2>여행 계획</h2>
         <ul>
           <li v-for="(landmark, index) in travelPlan" :key="index">{{ landmark }}</li>
@@ -11,12 +11,22 @@
         <button @click="submitTravelPlan">여행 계획 제출</button>
       </div>
     </div>
-  </template>
+</template>
 
 <script setup>
-
+import MapContainer from '@/components/common/MapContainer.vue'
 </script>
 
-<style>
+<style scoped>
 
+.travel-planner {
+  display: flex;
+  height: 100vh;
+}
+
+.col-md-6 {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
 </style>

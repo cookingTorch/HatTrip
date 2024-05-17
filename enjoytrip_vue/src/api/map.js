@@ -10,7 +10,7 @@ const types = [
     { value: 39, text: '음식점' },
 ]
 
-const displayMarker = (positions, map) => {
+const displayMarker = (positions, map, clickable, callback) => {
     
     var markers = [];
 
@@ -54,6 +54,12 @@ const displayMarker = (positions, map) => {
             title: positions[i].title,
             image: markerImage
         });
+
+        if(clickable){
+            kakao.maps.event.addListener(marker, 'click', function() {
+                alert('marker click!');
+            });
+        }
         markers.push(marker);
     }
 
