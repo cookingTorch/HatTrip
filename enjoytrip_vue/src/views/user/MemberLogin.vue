@@ -48,8 +48,6 @@
       userPwd: userPwd.value
     });
     let token = sessionStorage.getItem("accessToken");
-    console.log(token);
-    console.log("isLogin: " + isLogin.value);
     if (isLogin.value) {
       getUserInfo(token);
       // changeMenuState();

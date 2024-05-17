@@ -56,13 +56,11 @@ export const useUserStore = defineStore("user", () => {
 
   const getUserInfo = async (token) => {
     let decodeToken = jwtDecode(token);
-    console.log(decodeToken);
     await findById(
       decodeToken.userId,
       (response) => {
         if (response.status === httpStatusCode.OK) {
           userInfo.value = response.data.userInfo;
-          console.log("유저 정보", userInfo);
         } else {
           console.log("유저 정보 없음!!!!");
         }
