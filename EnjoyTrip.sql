@@ -78,7 +78,6 @@ CREATE TABLE IF NOT EXISTS plan_seq (
 CREATE TABLE IF NOT EXISTS plan_user (
 	`plan_no` INT,
     `user_id` varchar(16),
-    foreign key (`plan_no`) references plan_seq(`plan_no`) on delete cascade,
     foreign key (`user_id`) references members(`user_id`) on delete cascade
 );
 
