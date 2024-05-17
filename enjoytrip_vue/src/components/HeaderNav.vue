@@ -63,7 +63,9 @@ const logout = () => {
                 <a class="nav-link" aria-current="page" href="travelPlan.html">나만의 여행계획</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="hotPlaceBoast.html">핫플자랑하기</a>
+                <router-link :to="{ name: 'hotplace' }" class="nav-link">
+                  핫플레이스
+                </router-link>
               </li>
               <li class="nav-item">
                 <router-link :to="{ name: 'board' }" class="nav-link">
