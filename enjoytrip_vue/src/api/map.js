@@ -56,11 +56,6 @@ const displayMarker = (positions, map, clickable, linedraw) => {
             image: markerImage
         });
 
-        if(clickable){
-            kakao.maps.event.addListener(marker, 'click', function() {
-                alert('marker click!');
-            });
-        }
         markers.push(marker);
 
         

@@ -51,7 +51,9 @@
         <div class="col-md-6 row flex" v-if="type==='plan'">
             <h2>여행 계획</h2>
             <ul>
-            <li v-for="(landmark, index) in travelPlan" :key="index">{{ landmark }}</li>
+                <tr v-for="travel in travelPlan" :key="travel.contentId">
+                    <td>{{ travel.contentId }}</td>                    
+                </tr>
             </ul>
             <button @click="submitTravelPlan">여행 계획 제출</button>
         </div>
@@ -70,6 +72,7 @@ const selectedGugun= ref(0);
 const selectedType= ref(-1);
 const trips= ref([]);
 const mapContainer= ref(null);
+const travelPlan= ref([]);
 
 const props = defineProps({ type: String })
 
@@ -171,6 +174,13 @@ const searchByCondition = () => {
                 else
                     markers = displayMarker(positions, map, false, false);
                 
+                if(props.type=='plan'){
+                    for(var i=0; i<markers.length; i++){
+                        kakao.maps.event.addListener(markers[i], 'click', function() {
+                            alert('marker click!');
+                        });
+                    }
+                }
                 map.setCenter(positions[0].latlng);
                 map.setLevel(7);
             },
@@ -224,12 +234,21 @@ const searchByPos = () => {
                 markers = displayMarker(positions, map, true, false);
             else
                 markers = displayMarker(positions, map, false, false);
+
+            if(props.type=='plan'){
+                for(var i=0; i<markers.length; i++){
+                    kakao.maps.event.addListener(markers[i], 'click', function(){
+                        travelPlan.value.push(markers[i]);
+                    });
+                }
+            }
         },
         (error) => {
             console.log(error);
         }
     )
 }
+
 
 const moveCenter = (lat, lng) => {
     map.setCenter(new kakao.maps.LatLng(lat, lng))
