@@ -159,7 +159,7 @@ const searchByCondition = () => {
                 
                 for (var i = 0; i < markers.length; i++)
                     markers[i].setMap(null)
-                
+
                 if(props.type=='plan')
                     markers = displayMarker(positions, map, true);
                 else
@@ -202,6 +202,7 @@ const searchByPos = () => {
 
             data.forEach((trip) => {
                 let markerInfo = {
+                    contentId: trip.contentId,
                     title: trip.title,
                     latlng: new kakao.maps.LatLng(trip.latitude, trip.longitude),
                     contentTypeId: trip.contentTypeId,

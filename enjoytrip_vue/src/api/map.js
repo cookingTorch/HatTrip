@@ -50,6 +50,7 @@ const displayMarker = (positions, map, clickable, callback) => {
         console.log(positions[i])
         var marker = new kakao.maps.Marker({
             map,
+            contentId: positions[i].contentId,
             position: positions[i].latlng,
             title: positions[i].title,
             image: markerImage
