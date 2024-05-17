@@ -1,54 +1,60 @@
 <template>
-    <div class="container">
-      <nav-component></nav-component> <!-- Include your navigation component -->
-      <div class="col-md-12 justify-content-center">
-        <div class="mt-3 text-center fw-bold" style="font-size: 2rem;">
-          <div v-if="type === 'plan'">
-            여행 계획 설정
-          </div>
-          <div v-else>
-            전국 관광지 정보
-          </div>
+    <div :class="type==='attraction' ? 'container' : 'travel-planner'">
+        <div :class="type==='attraction' ? 'col-md-12 justify-content-center' : 'col-md-6 flex'">
+            <div class="mt-3 text-center fw-bold" style="font-size: 2rem;">
+            <div v-if="type === 'plan'">
+                여행 계획 설정
+            </div>
+            <div v-else>
+                전국 관광지 정보
+            </div>
+            </div>
+            <div class="row">
+            <form id="form-search" class="d-flex" @submit.prevent="search">
+                <input type="hidden" name="action" value="search">
+                <select v-model="selectedSido" @change="fetchGugun" class="form-select me-2">
+                <option selected>시도선택</option>
+                <option v-for="sido in sidos" :key="sido.code" :value="sido.code">{{ sido.name }}</option>
+                </select>
+                <select v-model="selectedGugun" class="form-select me-2">
+                <option selected>구군선택</option>
+                <option v-for="gugun in guguns" :key="gugun.code" :value="gugun.code">{{ gugun.name }}</option>
+                </select>
+                <select v-model="selectedType" class="form-select me-2">
+                <option v-for="type in types" :key="type.value" :value="type.value">{{ type.text }}</option>
+                </select>
+                <button id="btn-search" class="btn btn-outline-success" type="button"
+                    @click="searchByCondition">검색</button>
+            </form>
+            </div>
+            <div id="map" class="mt-3" style="width: 100%; height: 600px" ref="mapContainer"></div>
+            <div class="row" v-if="type==='attraction'">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>대표이미지</th>
+                    <th>관광지명</th>
+                    <th>주소</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="trip in trips" :key="trip.id" @click="moveCenter(trip.latitude, trip.longitude)">
+                    <td><img :src="trip.imgUrl" width="200px" v-if="trip.imgUrl">
+                        <span v-else class="gray">존재하는 이미지가 없습니다.</span></td>
+                    <td>{{ trip.title }}</td>
+                    <td>{{ trip.addr1 }} {{ trip.addr2 }}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
         </div>
-        <div class="row">
-          <form id="form-search" class="d-flex" @submit.prevent="search">
-            <input type="hidden" name="action" value="search">
-            <select v-model="selectedSido" @change="fetchGugun" class="form-select me-2">
-              <option selected>시도선택</option>
-              <option v-for="sido in sidos" :key="sido.code" :value="sido.code">{{ sido.name }}</option>
-            </select>
-            <select v-model="selectedGugun" class="form-select me-2">
-              <option selected>구군선택</option>
-              <option v-for="gugun in guguns" :key="gugun.code" :value="gugun.code">{{ gugun.name }}</option>
-            </select>
-            <select v-model="selectedType" class="form-select me-2">
-              <option v-for="type in types" :key="type.value" :value="type.value">{{ type.text }}</option>
-            </select>
-            <button id="btn-search" class="btn btn-outline-success" type="button"
-                @click="searchByCondition">검색</button>
-          </form>
+        <div class="col-md-6 row flex" v-if="type==='plan'">
+            <h2>여행 계획</h2>
+            <ul>
+            <li v-for="(landmark, index) in travelPlan" :key="index">{{ landmark }}</li>
+            </ul>
+            <button @click="submitTravelPlan">여행 계획 제출</button>
         </div>
-        <div id="map" class="mt-3" style="width: 100%; height: 600px" ref="mapContainer"></div>
-        <div class="row" v-if="type==='attraction'">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>대표이미지</th>
-                <th>관광지명</th>
-                <th>주소</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="trip in trips" :key="trip.id" @click="moveCenter(trip.latitude, trip.longitude)">
-                <td><img :src="trip.imgUrl" width="200px" v-if="trip.imgUrl">
-                    <span v-else class="gray">존재하는 이미지가 없습니다.</span></td>
-                <td>{{ trip.title }}</td>
-                <td>{{ trip.addr1 }} {{ trip.addr2 }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
 </template>
 
@@ -161,9 +167,9 @@ const searchByCondition = () => {
                     markers[i].setMap(null)
 
                 if(props.type=='plan')
-                    markers = displayMarker(positions, map, true);
+                    markers = displayMarker(positions, map, true, false);
                 else
-                    markers = displayMarker(positions, map, false);
+                    markers = displayMarker(positions, map, false, false);
                 
                 map.setCenter(positions[0].latlng);
                 map.setLevel(7);
@@ -215,9 +221,9 @@ const searchByPos = () => {
                 markers[i].setMap(null)
             
             if(props.type=='plan')
-                markers = displayMarker(positions, map, true);
+                markers = displayMarker(positions, map, true, false);
             else
-            markers = displayMarker(positions, map, false);
+                markers = displayMarker(positions, map, false, false);
         },
         (error) => {
             console.log(error);
@@ -230,7 +236,19 @@ const moveCenter = (lat, lng) => {
     map.setLevel(2)
 }
 
-  </script>
+</script>
   
-  <style>
-  </style>
+<style scoped>
+  
+.travel-planner {
+  display: flex;
+  height: 100vh;
+}
+
+.col-md-6 {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+</style>

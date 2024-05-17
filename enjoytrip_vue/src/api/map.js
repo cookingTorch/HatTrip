@@ -10,7 +10,7 @@ const types = [
     { value: 39, text: '음식점' },
 ]
 
-const displayMarker = (positions, map, clickable, callback) => {
+const displayMarker = (positions, map, clickable, linedraw) => {
     
     var markers = [];
 
@@ -62,6 +62,21 @@ const displayMarker = (positions, map, clickable, callback) => {
             });
         }
         markers.push(marker);
+
+        
+        // 다음 마커가 있을 때만 선을 그립니다
+        if (linedraw && i < positions.length - 1) {
+            // 현재 마커와 다음 마커를 연결하는 선을 그립니다
+            var polyline = new kakao.maps.Polyline({
+                path: [positions[i].latlng, positions[i + 1].latlng], // 선을 구성하는 좌표 배열
+                strokeWeight: 3, // 선의 두께
+                strokeColor: '#FF0000', // 선의 색깔
+                strokeOpacity: 0.7, // 선의 투명도
+                strokeStyle: 'solid' // 선의 스타일
+            });
+
+            polyline.setMap(map);
+        }
     }
 
     return markers;
