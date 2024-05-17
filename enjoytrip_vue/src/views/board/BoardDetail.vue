@@ -80,7 +80,7 @@
 </style>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import {
@@ -98,8 +98,11 @@ const router = useRouter();
 
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);
+const { isLogin } = storeToRefs(userStore);
 
-const userId = userInfo.value.userId;
+const userId = computed(() => {
+  return userInfo.value && isLogin ? userInfo.value.userId : 'Guest';
+});
 
 // const articleno = ref(route.params.articleno);
 const { articleno } = route.params;

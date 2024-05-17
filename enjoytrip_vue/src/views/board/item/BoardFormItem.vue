@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue"
+import { ref, computed, watch } from "vue"
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router"
 import { registArticle, getModifyArticle, modifyArticle } from "@/api/board"
@@ -14,6 +14,7 @@ const isUseId = ref(false)
 
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);
+const { isLogin } = storeToRefs(userStore);
 
 const article = ref({
   boardNo: 0,
@@ -39,7 +40,9 @@ if (props.type === "modify") {
   )
   isUseId.value = true
 } else {
-  article.value.userId = userInfo.value.userId;
+  article.value.userId = computed(() => {
+    return userInfo.value && isLogin ? userInfo.value.userId : 'Guest';
+  });
   isUseId.value = true;
 }
 
