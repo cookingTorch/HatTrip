@@ -76,7 +76,12 @@ const router = createRouter({
       path: '/plan/view',
       name: 'planView',
       component: PlanView
-    }
+    },
+    {
+      path: '/hotplace/datail/:hotplaceId',
+      name: 'hotplaceDetail',
+      component: BoardDetail
+    },
   ]
 });
 
