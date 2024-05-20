@@ -30,7 +30,7 @@ public class HotplaceServiceImpl implements HotplaceService {
 	@Override
 	public void registHotplace(HotplaceDto hotplaceDto) throws Exception {
 		StringTokenizer st = new StringTokenizer(hotplaceDto.getAddr1());
-		String sidoName = sidoCodeUtil.convert(st.nextToken().substring(0, 2));
+		String sidoName = sidoCodeUtil.convert(st.nextToken());
 		int sidoCode = hotplaceMapper.getSidoCode(sidoName);
 		int gugunCode = hotplaceMapper.getGugunCode(sidoCode, st.nextToken());
 		hotplaceDto.setSidoCode(sidoCode);

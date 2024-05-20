@@ -1,0 +1,32 @@
+body {
+    color: rgb(80, 80, 80);
+}
+
+body {
+    color: rgb(80, 80, 80);
+}
+
+.center-hr {
+    display: block;
+    margin: 20px auto;
+    width: 170px;
+    border: 0;
+    border-top: 5px solid rgb(77, 77, 119);
+    margin-bottom: 30px;
+}
+
+#map {
+    width: 59.5%;
+    height: 600px;
+}
+
+.mainContent{
+    /* background-color: blue; */
+    width: 100%;
+}
+
+.hotPlaceFormDiv{
+    /* background-color: blanchedalmond; */
+    width: 39.5%;
+    margin-left: 1%;
+}
