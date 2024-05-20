@@ -2,6 +2,7 @@
 </script>
 
 <template>
+    <div style="height: 80px"></div>
     <footer class="bg-light py-4 footer">
             <div class="container">
                 <div class="row">
