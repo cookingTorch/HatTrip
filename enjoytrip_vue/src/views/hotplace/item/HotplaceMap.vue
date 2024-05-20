@@ -34,8 +34,8 @@ const loadKakaoMap = (container) => {
     script.onload = () => {
         window.kakao.maps.load(() => {
             const options = {
-                center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-                level: 6
+                center: new window.kakao.maps.LatLng(37.50128969810118, 127.03960183847694),
+                level: 3
             };
 
             const mapInstance = new window.kakao.maps.Map(container, options);
