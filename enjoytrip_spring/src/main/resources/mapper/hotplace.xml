@@ -18,6 +18,11 @@
 		<result property="latitude" column="latitude" />
 		<result property="longitude" column="longitude" />
 	</resultMap>
+	
+	<resultMap id="contentTypeMap" type="com.ssafy.dto.ContentTypeDto">
+		<result property="contentTypeId" column="content_type_id" />
+		<result property="contentType" column="content_type" />
+	</resultMap>
 
 	<!-- getSidoCode. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="getSidoCode">
@@ -38,6 +43,12 @@
 	<insert id="registHotplace" parameterType="com.ssafy.dto.HotplaceDto" useGeneratedKeys="true" keyProperty="hotplaceId">
 		INSERT INTO hotplace_info (user_id, content_type_id, title, addr1, tel, image_src, sido_code, gugun_code, latitude, longitude)
 		VALUES (#{userId}, #{contentTypeId}, #{title}, #{addr1}, #{tel}, #{imageSrc}, #{sidoCode}, #{gugunCode}, #{latitude}, #{longitude})
+	</insert>
+	
+	<!-- registDescription. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<insert id="registDescription">
+		INSERT INTO hotplace_description (hotplace_id, overview)
+		VALUES (#{hotplaceId}, #{description})
 	</insert>
 	
 	<!-- updateImageSrc. id는 repo클래스의 메소드 이름과 일치시킨다. -->
@@ -73,5 +84,71 @@
 	    DELETE FROM hotplace_info
 	    WHERE hotplace_id = #{hotplaceId}
 	</delete>
+	
+	<!-- getContentType. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getContentType">
+		SELECT content_type
+		FROM content_type
+		WHERE content_type_id = #{contentTypeId}
+	</select>
+	
+	<!-- listContentTypes. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="listContentTypes" resultType="com.ssafy.dto.ContentTypeDto" resultMap="contentTypeMap">
+		SELECT *
+		FROM content_type
+	</select>
+	
+	<!-- searchHotplaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="searchHotplaces" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
+		SELECT *
+		FROM hotplace_info
+		WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+		ORDER BY hotplace_id DESC
+		LIMIT #{placesPerPage} OFFSET #{offset}
+	</select>
+	
+	<!-- countSearchedPlaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="countSearchedPlaces">
+		SELECT COUNT(*)
+		FROM hotplace_info
+		WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+	
+	<!-- searchContentTypeIds. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="searchContentTypeIds">
+		SELECT content_type_id
+		FROM content_type
+		WHERE content_type LIKE CONCAT('%', #{keyword}, '%')
+		ORDER BY content_type_id ASC
+	</select>
+	
+	<!-- searchHotplacesByTypeIds. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="searchHotplacesByTypeIds" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
+		SELECT *
+		FROM hotplace_info
+		WHERE content_type_id IN
+		<foreach item="item" index="index" collection="contentTypeIds" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		ORDER BY hotplace_id DESC
+		LIMIT #{placesPerPage} OFFSET #{offset}
+	</select>
+	
+	<!-- countSearchedPlacesByTypeIds. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="countSearchedPlacesByTypeIds">
+		SELECT COUNT(*)
+		FROM hotplace_info
+		WHERE content_type_id IN
+		<foreach item="item" index="index" collection="contentTypeIds" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- getImageSrcByHotplaceId. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="getImageSrcByHotplaceId">
+		SELECT image_src
+		FROM hotplace_info
+		WHERE hotplace_id = #{hotplaceId}
+	</select>
 	
 </mapper>

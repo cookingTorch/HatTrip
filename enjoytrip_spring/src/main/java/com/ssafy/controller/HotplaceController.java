@@ -1,8 +1,11 @@
 package com.ssafy.controller;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.dto.ContentTypeDto;
 import com.ssafy.dto.HotplaceDto;
 import com.ssafy.dto.PagedDto;
 import com.ssafy.service.HotplaceService;
@@ -31,14 +35,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @CrossOrigin("*")
 public class HotplaceController {
 	
-	@Value("${file.path}")
-	private String uploadPath;
-	
 	@Value("${file.path.upload-images}")
 	private String uploadImagePath;
 	
-	@Value("${file.path.upload-files}")
-	private String uploadFilePath;
+	@Value("${file.path.access-images}")
+	private String accessImagePath;
 	
 	private final HotplaceService hotplaceService;
 	
@@ -61,15 +62,25 @@ public class HotplaceController {
 			@RequestParam(value="tel") String tel,
 			@RequestParam(value="latitude") double latitude,
 			@RequestParam(value="longitude") double longitude,
-			@RequestParam("images") List<MultipartFile> files) {
+			@RequestParam(value="description") String description,
+			@RequestParam(value = "images", required = false) Optional<List<MultipartFile>> optionalFiles) {
 		
 		try {
+			System.out.println(userId);
+			System.out.println(contentTypeId);
+			System.out.println(title);
+			System.out.println(addr1);
+			System.out.println(tel);
+			System.out.println(latitude);
+			System.out.println(longitude);
+			System.out.println(description);
 			HotplaceDto hotplaceDto = new HotplaceDto(userId, contentTypeId, title, addr1, tel, latitude, longitude);
-			hotplaceService.registHotplace(hotplaceDto);
+			hotplaceService.registHotplace(hotplaceDto, description);
 			
-			String imageSrc = uploadImagePath + "/" + hotplaceDto.getHotplaceId();
-		    // File 객체 생성
-		    File directory = new File(imageSrc);
+			String imageSrc = "/hotplace/" + hotplaceDto.getHotplaceId() + "/";
+		    String localPath = uploadImagePath + imageSrc;
+			// File 객체 생성
+		    File directory = new File(localPath);
 
 		    // 해당 경로에 디렉토리가 존재하는지 확인하고, 없으면 생성
 		    if (!directory.exists()) {
@@ -80,11 +91,18 @@ public class HotplaceController {
 		        }
 		    }
 		    
+		    List<MultipartFile> files;
+	        if (optionalFiles.isPresent() && !optionalFiles.get().isEmpty()) {
+	            files = optionalFiles.get();
+	        } else {
+	            files = new ArrayList<>();
+	        }
+		    
 		    hotplaceDto.setImageSrc(imageSrc);
 		    hotplaceService.updateImageSrc(hotplaceDto);
 		    
 		    try {
-		    	hotplaceService.saveFiles(files, imageSrc);
+		    	hotplaceService.saveFiles(files, localPath);
 		    } catch (Exception e) {
 		    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload failed: " + e.getMessage());
 		    }
@@ -160,6 +178,112 @@ public class HotplaceController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("핫플레이스 삭제에 실패했습니다.");
         }
+    }
+	
+	@Operation(summary = "핫플레이스 검색", description = "핫플레이스 키워드 검색")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "OK"),
+			@ApiResponse(responseCode = "404", description = "Page Not Found"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+			})
+	@GetMapping(value="/search")
+	public ResponseEntity<?> search(
+	    	@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+	    	@RequestParam(value = "placesPerPage", defaultValue = "10") int placesPerPage,
+			@RequestParam(value = "searchType") String searchType,
+		    @RequestParam(value = "keyword") String keyword) {
+	    try {
+	    	keyword = URLDecoder.decode(keyword, "UTF-8");
+	        PagedDto<HotplaceDto> result = hotplaceService.searchHotplaces(pageNo, placesPerPage, searchType, keyword);
+	        if(result!=null && !result.getContent().isEmpty()) {
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+	            return ResponseEntity.ok().headers(headers).body(result);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	        }
+	    } catch (Exception e) {
+	        return exceptionHandling(e);
+	    }
+	}
+	
+	@Operation(summary = "관광지 유형", description = "관광지 유형 목록")
+	@ApiResponses(value = { 
+	        @ApiResponse(responseCode = "200", description = "OK"),
+	        @ApiResponse(responseCode = "400", description = "Bad Request"),
+	        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	        })
+	@GetMapping("/type")
+    public ResponseEntity<?> type() {
+		
+		try {
+            List<ContentTypeDto> result = hotplaceService.listContentTypes();
+            if(result != null) {
+            	HttpHeaders headers = new HttpHeaders();
+            	headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+				return ResponseEntity.ok().headers(headers).body(result);
+            } else {
+            	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
+        } catch (Exception e) {
+        	return exceptionHandling(e);
+        }
+		
+    }
+	
+	@Operation(summary = "핫플레이스 썸네일", description = "핫플레이스 첫 번째 이미지")
+	@ApiResponses(value = { 
+	        @ApiResponse(responseCode = "200", description = "OK"),
+	        @ApiResponse(responseCode = "400", description = "Bad Request"),
+	        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	        })
+	@GetMapping("/thumbnail")
+    public ResponseEntity<?> thumbnail(@RequestParam(value = "hotplaceId") int hotplaceId) {
+		
+		try {
+            String result = hotplaceService.getThumbNail(hotplaceId);
+            if(result != null) {
+            	result = accessImagePath + result;
+            	HttpHeaders headers = new HttpHeaders();
+            	headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+				return ResponseEntity.ok().headers(headers).body(result);
+            } else {
+            	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
+        } catch (Exception e) {
+        	return exceptionHandling(e);
+        }
+		
+    }
+	
+	@Operation(summary = "핫플레이스 이미지", description = "핫플레이스 이미지 목록")
+	@ApiResponses(value = { 
+	        @ApiResponse(responseCode = "200", description = "OK"),
+	        @ApiResponse(responseCode = "400", description = "Bad Request"),
+	        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	        })
+	@GetMapping("/image")
+    public ResponseEntity<?> image(@RequestParam(value = "hotplaceId") int hotplaceId) {
+		
+		try {
+            List<String> images = hotplaceService.listHotplaceImages(hotplaceId);
+            if(images != null) {
+            	List<String> result = new ArrayList<>();
+            	for (String image : images) {
+            		if (image != null) {
+            			result.add(accessImagePath + image);
+            		}
+            	}
+            	HttpHeaders headers = new HttpHeaders();
+            	headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+				return ResponseEntity.ok().headers(headers).body(result);
+            } else {
+            	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
+        } catch (Exception e) {
+        	return exceptionHandling(e);
+        }
+		
     }
 	
     private ResponseEntity<String> exceptionHandling(Exception e) {

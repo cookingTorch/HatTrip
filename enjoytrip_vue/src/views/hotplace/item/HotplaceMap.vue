@@ -57,6 +57,12 @@ const loadKakaoMap = (container) => {
 
             infoWindow.value = new window.kakao.maps.InfoWindow({zindex:1});
 
+            // 초기 마커 위치의 주소를 검색하고 이벤트를 발생시킵니다.
+            const initialCoords = mapInstance.getCenter();
+            emits('updateLocation', { latitude: initialCoords.getLat(), longitude: initialCoords.getLng() });
+            searchDetailAddrFromCoords(geocoder, initialCoords, mapInstance, marker);
+            searchAddrFromCoords(mapInstance.getCenter(), displayCenterInfo);
+
             // 지도 클릭 이벤트 등록
             window.kakao.maps.event.addListener(mapInstance, 'click', function(mouseEvent) {
                 const latlng = mouseEvent.latLng;
@@ -84,11 +90,10 @@ function searchAddrFromCoords(coords, callback) {
 function searchDetailAddrFromCoords(geocoder, coords, map, marker) {
     geocoder.coord2Address(coords.getLng(), coords.getLat(), function(result, status) {
         if (status === kakao.maps.services.Status.OK) {
-            const detailAddr = !!result[0].road_address ? `<div>${result[0].road_address.address_name}</div>` : '';
+            const detailAddr = !!result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
             const content = `<div class="bAddr">
                                 <span class="title">주소</span>
-                                ${detailAddr}
-                                <div>${result[0].address.address_name}</div>
+                                <div>${detailAddr}</div>
                             </div>`;
 
             marker.setPosition(coords);
@@ -96,7 +101,8 @@ function searchDetailAddrFromCoords(geocoder, coords, map, marker) {
             infoWindow.value.setContent(content);
             infoWindow.value.open(map, marker);
 
-            emits('updateAddress', { road: result[0].road_address?.address_name, jibun: result[0].address.address_name }); // 주소 업데이트 이벤트 발생
+            // updateAddress 이벤트에 addr 필드로 통합된 주소 정보 전송
+            emits('updateAddress', { addr: detailAddr });
         }
     });
 }

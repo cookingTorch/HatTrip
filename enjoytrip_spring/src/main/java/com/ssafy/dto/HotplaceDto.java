@@ -5,6 +5,7 @@ public class HotplaceDto {
 	private int hotplaceId;
 	private String userId;
 	private int contentTypeId;
+	private String contentType;
 	private String title;
 	private String addr1;
 	private String addr2;
@@ -18,12 +19,13 @@ public class HotplaceDto {
 	public HotplaceDto() {
 	}
 
-	public HotplaceDto(int hotplaceId, String userId, int contentTypeId, String title, String addr1, String addr2,
+	public HotplaceDto(int hotplaceId, String userId, int contentTypeId, String contentType, String title, String addr1, String addr2,
 			String tel, String imageSrc, int sidoCode, int gugunCode, double latitude, double longitude) {
 		super();
 		this.hotplaceId = hotplaceId;
 		this.userId = userId;
 		this.contentTypeId = contentTypeId;
+		this.contentType = contentType;
 		this.title = title;
 		this.addr1 = addr1;
 		this.addr2 = addr2;
@@ -69,6 +71,14 @@ public class HotplaceDto {
 
 	public void setContentTypeId(int contentTypeId) {
 		this.contentTypeId = contentTypeId;
+	}
+	
+	public String getContentType() {
+		return contentType;
+	}
+	
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	public String getTitle() {
