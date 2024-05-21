@@ -24,7 +24,7 @@
                     <fieldset>
                         <legend>문의하기!</legend>
                         <span class="form-label" for="questForm">이름과 연락처를 남겨주세요.</span>
-                        <div class="mb-3">
+                        <div class="mt-1 mb-3">
                         <input type="text" id="nameTextInput" class="form-control" placeholder="이름">
                         </div>
                         <div class="mb-3">
