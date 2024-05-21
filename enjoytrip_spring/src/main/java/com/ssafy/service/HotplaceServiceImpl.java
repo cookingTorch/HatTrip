@@ -82,6 +82,7 @@ public class HotplaceServiceImpl implements HotplaceService {
         List<HotplaceDto> content = hotplaceMapper.listHotplaces(offset, placesPerPage);
         for (HotplaceDto hotplaceDto : content) {
         	hotplaceDto.setContentType(hotplaceMapper.getContentType(hotplaceDto.getContentTypeId()));
+        	hotplaceDto.setDescription(hotplaceMapper.getDescriptionByHotplaceId(hotplaceDto.getHotplaceId()));
         }
         int totalElements = hotplaceMapper.countHotplaces();
         return new PagedDto<>(content, pageNo, placesPerPage, totalElements);
@@ -89,7 +90,11 @@ public class HotplaceServiceImpl implements HotplaceService {
 
 	@Override
 	public HotplaceDto getHotplace(int hotplaceId) throws Exception {
-		return hotplaceMapper.getHotplace(hotplaceId);
+		HotplaceDto hotplaceDto;
+		hotplaceDto = hotplaceMapper.getHotplace(hotplaceId);
+		hotplaceDto.setContentType(hotplaceMapper.getContentType(hotplaceDto.getContentTypeId()));
+		hotplaceDto.setDescription(hotplaceMapper.getDescriptionByHotplaceId(hotplaceId));
+		return hotplaceDto;
 	}
 
 	@Override

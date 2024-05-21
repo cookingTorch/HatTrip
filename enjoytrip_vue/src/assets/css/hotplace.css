@@ -1,3 +1,44 @@
+.mainContain {
+    /* background-color: aqua; */
+    width: 80%;
+    margin: 0 auto;
+}
+
+.input-group {
+    width: 50%;
+}
+
+.dropdown {
+    margin-left: 34%;
+}
+
+.search {
+    display: flex;
+}
+
+.search-left {
+    width: 30%;
+}
+
+.search-right {
+    display: flex;
+    width: 70%;
+    justify-content: right;
+}
+
+.table {
+    margin: 50px 0;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: center;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
 body {
     color: rgb(80, 80, 80);
 }
@@ -29,4 +70,40 @@ body {
     /* background-color: blanchedalmond; */
     width: 39.5%;
     margin-left: 1%;
+}
+
+.btn {
+    white-space: nowrap;
+}
+
+.bg-red {
+    background-color: rgb(193, 66, 66);
+}
+
+.bg-blue {
+    background-color: rgb(66, 85, 193);
+}
+
+.bg-purple {
+    background-color: #6f42c1;
+}
+
+.bg-olive {
+    background-color: #808000;
+}
+
+.bg-orange {
+    background-color: #c0773c;
+}
+
+.bg-green {
+    background-color: rgb(71, 153, 85);
+}
+
+.bg-navy {
+    background-color: rgb(29, 23, 85);
+}
+
+.bg-mint {
+    background-color: rgb(78, 148, 153);
 }

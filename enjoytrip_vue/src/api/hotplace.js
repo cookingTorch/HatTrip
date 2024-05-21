@@ -25,10 +25,16 @@ function getThumbnail(hotplaceId, success, fail) {
     http.get(`/hotplace/thumbnail?hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
+function getHotplaceDetail(hotplaceId, success, fail) {
+    console.log("id :", hotplaceId);
+    http.get(`/hotplace/view?hotplaceId=${hotplaceId}`).then(success).catch(fail);
+}
+
 export {
     registHotplace,
     listHotplaces,
     listContentTypes,
     searchHotplaces,
-    getThumbnail
+    getThumbnail,
+    getHotplaceDetail
 }

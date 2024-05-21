@@ -4,6 +4,10 @@
     margin: 0 auto;
 }
 
+.btn {
+    white-space: nowrap;
+}
+
 a, router-link {
     color: inherit; /* 상위 요소에서 상속받은 색상 적용 */
     text-decoration: none; /* 밑줄 없애기 */

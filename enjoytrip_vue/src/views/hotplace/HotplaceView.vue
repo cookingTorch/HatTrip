@@ -23,7 +23,7 @@
                         </ul>
                         <input type="text" class="form-control" v-model="param.keyword" placeholder="검색어..." @keyup.enter="searchHotPlaceList(param.keyword)">
                         <button type="button" class="btn btn-outline-secondary" id="basic-addon2" @click="searchHotPlaceList(param.keyword)">
-                        검색
+                            검색
                         </button>
                     </div>
                 </div>
@@ -33,19 +33,19 @@
                     <div class="row">
                         <div class="col-md-4" v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
                             <div class="card mb-4 box-shadow">
-                            <img class="card-img-top" :src="thumbnailUrls[hotplace.hotplaceId] || 'default-thumbnail.jpg'" alt="Thumbnail">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h5 class="card-title mb-0">{{ hotplace.title }}</h5>
-                                    <span :class="['badge', getBadgeClass(hotplace.contentTypeId)]">{{ hotplace.contentType }}</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <router-link :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId }}" class="btn btn-sm btn-outline-secondary">View</router-link>
+                                <img class="card-img-top" :src="thumbnailUrls[hotplace.hotplaceId] || 'default-thumbnail.jpg'" alt="Thumbnail">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h5 class="card-title mb-0">{{ hotplace.title }}</h5>
+                                        <span :class="['badge', getBadgeClass(hotplace.contentTypeId)]">{{ hotplace.contentType }}</span>
                                     </div>
-                                    <small class="text-muted">{{ hotplace.userId }}</small>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <router-link :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId }}" class="btn btn-sm btn-outline-secondary">View</router-link>
+                                        </div>
+                                        <small class="text-muted">{{ hotplace.userId }}</small>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -217,42 +217,18 @@ function thumbnail(hotplaceId) {
     );
 }
 </script>
-  
-<style scoped src="@/assets/css/board.css">
-</style>
 
-<style scoped src="@/assets/css/hotplace.css">
-</style>
+<style scoped>
+@import "@/assets/css/hotplace.css";
 
-<style>
+.input-group {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
 .card-img-top {
-  width: 100%; /* 이미지가 카드의 너비에 맞게 조정됩니다. */
-  height: 250px; /* 이미지 높이를 200px로 고정합니다. */
-  object-fit: cover; /* 이미지가 비율을 유지하면서 지정된 높이와 너비에 맞게 조정됩니다. */
-}
-
-.bg-red {
-    background-color: rgb(193, 66, 66);
-}
-.bg-blue {
-    background-color: rgb(66, 85, 193);
-}
-.bg-purple {
-    background-color: #6f42c1;
-}
-.bg-olive {
-    background-color: #808000;
-}
-.bg-orange {
-    background-color: #c0773c;
-}
-.bg-green {
-    background-color: rgb(71, 153, 85);
-}
-.bg-navy {
-    background-color: rgb(29, 23, 85);
-}
-.bg-mint {
-    background-color: rgb(78, 148, 153);
+    width: 100%; /* 이미지가 카드의 너비에 맞게 조정됩니다. */
+    height: 250px; /* 이미지 높이를 200px로 고정합니다. */
+    object-fit: cover; /* 이미지가 비율을 유지하면서 지정된 높이와 너비에 맞게 조정됩니다. */
 }
 </style>

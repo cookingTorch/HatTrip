@@ -13,6 +13,7 @@ import AttractionInfo from '@/views/attraction/AttractionInfo.vue'
 import HotplaceRegister from '@/views/hotplace/HotplaceRegister.vue';
 import HotplaceView from '@/views/hotplace/HotplaceView.vue'
 import PlanView from '@/views/plan/PlanView.vue'
+import HotplaceDetail from '@/views/hotplace/HotplaceDetail.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,7 +81,7 @@ const router = createRouter({
     {
       path: '/hotplace/datail/:hotplaceId',
       name: 'hotplaceDetail',
-      component: BoardDetail
+      component: HotplaceDetail
     },
   ]
 });

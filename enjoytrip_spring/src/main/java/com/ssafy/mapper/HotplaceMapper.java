@@ -29,5 +29,6 @@ public interface HotplaceMapper {
 	List<HotplaceDto> searchHotplacesByTypeIds(int offset, int placesPerPage, List<Integer> contentTypeIds) throws SQLException;
 	int countSearchedPlacesByTypeIds(List<Integer> contentTypeIds) throws IOException;
 	String getImageSrcByHotplaceId(int hotplaceId) throws SQLException;
+	String getDescriptionByHotplaceId(int hotplaceId) throws SQLException;
 	
 }

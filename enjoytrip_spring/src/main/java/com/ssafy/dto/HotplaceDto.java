@@ -15,6 +15,7 @@ public class HotplaceDto {
 	private int gugunCode;
 	private double latitude;
 	private double longitude;
+	private String description;
 	
 	public HotplaceDto() {
 	}
@@ -151,6 +152,14 @@ public class HotplaceDto {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }
