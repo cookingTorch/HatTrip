@@ -189,7 +189,7 @@ public class HotplaceController {
 	@GetMapping(value="/search")
 	public ResponseEntity<?> search(
 	    	@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-	    	@RequestParam(value = "placesPerPage", defaultValue = "10") int placesPerPage,
+	    	@RequestParam(value = "placesPerPage", defaultValue = "3") int placesPerPage,
 			@RequestParam(value = "searchType") String searchType,
 		    @RequestParam(value = "keyword") String keyword) {
 	    try {

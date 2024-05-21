@@ -65,9 +65,9 @@
         </div>
         <div class="card mt-3">
           <div class="card-body">
-            <h5 class="card-title">댓글 작성</h5>
+            <h5 class="card-title mb-3">댓글 작성</h5>
             <textarea v-model="newComment" @keyup.enter="submitComment" class="form-control" rows="3"></textarea>
-            <button class="btn btn-primary mt-2" @click="submitComment">댓글 등록</button>
+            <button class="btn btn-primary mt-4" @click="submitComment">등록</button>
           </div>
         </div>
       </div>

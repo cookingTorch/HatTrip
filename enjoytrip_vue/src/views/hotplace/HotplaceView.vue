@@ -30,37 +30,6 @@
             </div>
             <div>
                 <div class="mt-5 mb-4">
-                    <!-- <table class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">핫플</th>
-                            <th scope="col">작성자</th>
-                            <th scope="col">유형</th>
-                            <th scope="col">이미지</th>
-                            <th scope="col">tel</th>
-                            <th scope="col">설명</th>
-                        </tr>
-                        </thead>
-                        <tbody id="travelInfoTable">
-                        <tr v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
-                            <td>
-                                <router-link
-                                    :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId } }"
-                                    class="article-title link-dark"
-                                >
-                                    {{ hotplace.title }}
-                                </router-link>
-                            </td>
-                            <td>{{ hotplace.userId }}</td>
-                            <td>{{ hotplace.contentType }}</td>
-                            <td>
-                                <img v-if="thumbnailUrls[hotplace.hotplaceId]" :src="thumbnailUrls[hotplace.hotplaceId]" alt="Thumbnail">
-                                <span v-else></span>
-                            </td>
-                            <td>{{ hotplace.tel }}</td>
-                        </tr>
-                        </tbody>
-                    </table> -->
                     <div class="row">
                         <div class="col-md-4" v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
                             <div class="card mb-4 box-shadow">
@@ -68,7 +37,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h5 class="card-title mb-0">{{ hotplace.title }}</h5>
-                                    <span class="badge bg-secondary">{{ hotplace.contentType }}</span>
+                                    <span :class="['badge', getBadgeClass(hotplace.contentTypeId)]">{{ hotplace.contentType }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
@@ -115,6 +84,21 @@ const selectOption = ref([
     { text: "관광지 유형", value: "content_type" },
     { text: "작성자", value: "user_id" }
 ]);
+
+const contentTypeColors = {
+  '12': 'bg-red',
+  '14': 'bg-blue',
+  '15': 'bg-purple',
+  '25': 'bg-olive',
+  '28': 'bg-orange',
+  '32': 'bg-green',
+  '38': 'bg-navy',
+  '39': 'bg-mint'
+};
+
+const getBadgeClass = (contentTypeId) => {
+  return contentTypeColors[contentTypeId] || 'bg-secondary'; // 기본 색상은 secondary
+};
 
 const hotplaces = ref([]);
 const currentPage = ref(1);
@@ -245,5 +229,30 @@ function thumbnail(hotplaceId) {
   width: 100%; /* 이미지가 카드의 너비에 맞게 조정됩니다. */
   height: 250px; /* 이미지 높이를 200px로 고정합니다. */
   object-fit: cover; /* 이미지가 비율을 유지하면서 지정된 높이와 너비에 맞게 조정됩니다. */
+}
+
+.bg-red {
+    background-color: rgb(193, 66, 66);
+}
+.bg-blue {
+    background-color: rgb(66, 85, 193);
+}
+.bg-purple {
+    background-color: #6f42c1;
+}
+.bg-olive {
+    background-color: #808000;
+}
+.bg-orange {
+    background-color: #c0773c;
+}
+.bg-green {
+    background-color: rgb(71, 153, 85);
+}
+.bg-navy {
+    background-color: rgb(29, 23, 85);
+}
+.bg-mint {
+    background-color: rgb(78, 148, 153);
 }
 </style>
