@@ -11,12 +11,12 @@
                   <label for="password" class="form-label">비밀번호</label>
                   <input type="password" class="form-control" id="userPwd" v-model="userPwd" @keyup.enter="login" required>
               </div>
-              <button class="btn btn-primary">
+              <button class="btn btn-outline-primary">
                   <router-link :to="{ name: 'regist' }" class="nav-link">
                       회원가입
                   </router-link>
               </button>
-              <button type="submit" class="btn btn-primary">로그인</button>
+              <button type="submit" class="btn btn-primary ms-2">로그인</button>
           </form>
       </div>
   </div>
@@ -81,7 +81,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* 화면 세로 중앙 정렬을 위해 전체 높이를 활용 */
+  height: 80vh; /* 화면 세로 중앙 정렬을 위해 전체 높이를 활용 */
 }
 
 .login-card {
@@ -95,7 +95,7 @@
   margin-bottom: 0.5rem;
 }
 
-.btn-primary {
+.btn {
   margin-top: 1rem;
 }
 </style>
