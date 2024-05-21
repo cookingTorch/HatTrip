@@ -60,7 +60,7 @@
         </div>
         <div class="btn-box">
           <div class="btn-group" role="group" aria-label="Basic outlined example" id="travelInfoListPage">
-            <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage - 1)">이전</button>
+            <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">이전</button>
             <button
               type="button"
               v-for="n in totalPages"
@@ -71,7 +71,7 @@
             >
               {{ n }}
             </button>
-            <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage + 1)">다음</button>
+            <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">다음</button>
           </div>
         </div>
       </div>

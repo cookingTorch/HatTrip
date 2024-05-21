@@ -9,7 +9,7 @@ body {
     background-image: url('../img/main.jpg');
     background-size: cover; /* 배경 이미지가 div 크기에 맞게 조정되도록 설정 */
     background-position: center; /* 배경 이미지가 div의 중앙에 위치하도록 설정 */
-    height: 1000px;
+    height: 870px;
     width: 100%;
     margin-top: -70px;
     padding-top: 70px;
