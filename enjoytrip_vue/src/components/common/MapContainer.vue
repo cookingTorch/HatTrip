@@ -116,7 +116,7 @@ const fetchGugun = () => {
 const loadScript = () => {
     const key = import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
     const script = document.createElement('script')
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${key}&autoload=false`
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${key}&autoload=false&libraries=services`
     script.addEventListener('load', () => kakao.maps.load(initMap))
     document.head.appendChild(script);
 }
