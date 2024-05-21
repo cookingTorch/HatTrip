@@ -8,6 +8,15 @@
     white-space: nowrap;
 }
 
+.center-hr {
+    display: block;
+    margin: 20px auto;
+    width: 170px;
+    border: 0;
+    border-top: 5px solid rgb(77, 77, 119);
+    margin-bottom: 30px;
+}
+
 a, router-link {
     color: inherit; /* 상위 요소에서 상속받은 색상 적용 */
     text-decoration: none; /* 밑줄 없애기 */

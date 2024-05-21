@@ -7,7 +7,7 @@
       <hr class="center-hr">
       <div>
         <div class="row my-2">
-          <h2 class="text-secondary px-5">{{ article.boardNo }}. {{ article.title }}</h2>
+          <h2 class="text-secondary">{{ article.title }}</h2>
         </div>
         <div class="row">
           <div class="col-md-8">
@@ -19,14 +19,17 @@
               <p>
                 <span class="fw-bold">{{ article.userId }}</span> <br />
                 <span class="text-secondary fw-light">
-                  {{ article.createAt }} 조회수 : {{ article.hits }}
+                  {{ article.createAt }}
+                </span>
+                <span>
+                  조회수 : {{ article.hits }}
                 </span>
               </p>
             </div>
           </div>
           <div class="col-md-4 align-self-center text-end">댓글 : {{ commentCount }}</div>
           <div class="divider mb-3"></div>
-          <div class="text-secondary">
+          <div>
             {{ article.content }}
           </div>
           <div class="divider mt-3 mb-3"></div>
