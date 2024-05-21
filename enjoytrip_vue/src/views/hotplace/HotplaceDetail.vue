@@ -37,14 +37,20 @@
                         <img :src="imgSrc" class="img-fluid" alt="Hotplace image">
                     </div>
                 </div>
-                <div class="mb-3">
-                    {{ hotplace.description }}
+                <div class="imageContainer text-secondary mb-3">
+                    {{ hotplace.title }}
                 </div>
-                <div class="mb-3">
-                    <b>주소 : </b>{{ hotplace.addr1 }}
+                <div class="imageContainer mb-3">
+                    :&nbsp;{{ hotplace.description }}
                 </div>
-                <div v-if="hotplace.tel" class="mb-3">
-                    <b>Tel. </b>{{ hotplace.tel }}
+                <div class="imageContainer mb-3">
+                    <b>주소 :&nbsp;</b>{{ hotplace.addr1 }}
+                </div>
+                <div v-if="hotplace.tel" class="imageContainer mb-3">
+                    <b>Tel.&nbsp;</b>{{ hotplace.tel }}
+                </div>
+                <div class="imageContainer mt-5 mb-3">
+                    <HotplaceImageMap :lat=hotplace.latitude :lng=hotplace.longitude :marker-text=hotplace.title />
                 </div>
             </div>
         </div>
@@ -53,6 +59,7 @@
 </template>
 
 <script setup>
+import HotplaceImageMap from './item/HotplaceImageMap.vue';
 import { ref, computed, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
