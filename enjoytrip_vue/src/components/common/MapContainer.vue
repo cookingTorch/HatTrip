@@ -5,9 +5,6 @@
             <div v-if="type === 'plan'">
                 여행 계획 설정
             </div>
-            <div v-else>
-                전국 관광지 정보
-            </div>
             </div>
             <div class="row">
             <form id="form-search" class="d-flex" @submit.prevent="search">
