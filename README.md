@@ -1,47 +1,58 @@
-# 07_EnjoyTrip_Vue
+# 08_EnjoyTrip_Final
 
 ## 메인 화면
-![](readmeImg/vue/메인%20화면.png)
+![](readmeImg/final/메인화면.PNG)
 
 ## 회원 관리
 
 ### 로그인
-![](readmeImg/vue/로그인.png)
+![](readmeImg/final/로그인.PNG)
 
-#### 회원 정보 수정
-![](readmeImg/vue/회원%20정보%20수정.png)
+### 회원 정보 수정
+![](readmeImg/final/회원정보수정.PNG)
 
-## QnA 게시판
+## Q&A 게시판
 
-### 게시글 목록
-![](readmeImg/vue/게시글%20목록.png)
+### 목록
+![](readmeImg/final/게시판목록.PNG)
 
-### 게시글 등록
-![](readmeImg/vue/게시글%20작성.png)
+### 검색 ( 제목 | 내용 | 작성자 )
+![](readmeImg/final/게시판검색.PNG)
 
-### 게시글 수정
-![](readmeImg/vue/게시글%20수정.png)
+### 글 내용
+![](readmeImg/final/게시판상세.PNG)
 
-### 게시글 보기
+### 글쓰기
+![](readmeImg/final/게시판글쓰기.PNG)
 
-#### 글 수정, 글 삭제, 댓글 기능
-![](readmeImg/vue/게시글%20댓글.png)
+### 글수정
+![](readmeImg/final/게시판글수정.PNG)
 
-### 게시글 상세 검색
+## 지역별 여행지
 
-#### 작성자 검색
-![](readmeImg/vue/게시글%20상세%20검색_작성자.png)
+### 여행지 검색
+![](readmeImg/final/지역별여행지.PNG)
 
-#### 제목 검색
-![](readmeImg/vue/게시글%20상세%20검색_제목.png)
+### 상세 정보
+![](readmeImg/final/지역별여행지2.PNG)
 
-#### 내용 검색
-![](readmeImg/vue/게시글%20상세%20검색_내용.png)
+## 핫플레이스
 
-## 지역별 여행지 정보
+### 핫플레이스 등록
+![](readmeImg/final/핫플레이스등록.PNG)
 
-### 지도
-![](readmeImg/vue/지역별%20여행지%20정보.png)
+### 핫플레이스 목록
+![](readmeImg/final/핫플레이스목록.PNG)
 
-### 관광지 상세
-![](readmeImg/vue/지역별%20여행지%20정보2.png)
+### 핫플레이스 검색 ( 핫플 이름 | 관광지 유형 | 작성자 )
+![](readmeImg/final/핫플레이스검색.PNG)
+
+### 상세 정보
+![](readmeImg/final/핫플레이스상세.PNG)
+
+![](readmeImg/final/핫플레이스상세2.PNG)
+
+## 여행계획
+
+### 미완
+![](readmeImg/final/여행계획_미완.PNG)
