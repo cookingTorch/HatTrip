@@ -124,7 +124,7 @@ public class HotplaceController {
 	@GetMapping(value="/list")
     public ResponseEntity<?> list(
     	@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-    	@RequestParam(value = "placesPerPage", defaultValue = "10") int placesPerPage) {
+    	@RequestParam(value = "placesPerPage", defaultValue = "3") int placesPerPage) {
 		
         try {
             PagedDto<HotplaceDto> result = hotplaceService.listHotplaces(pageNo, placesPerPage);

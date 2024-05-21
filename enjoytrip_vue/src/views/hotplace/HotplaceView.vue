@@ -1,84 +1,103 @@
 <template>
     <div class="container justify-content-center">
         <div class="mainContain">
-        <div class="mt-3 text-center fs-2" role="alert">
-            핫플레이스
-        </div>
-        <hr class="center-hr">
-        <div class="search">
-            <div class="search-left">
-            <button type="button" class="btn btn-outline-primary" @click="pushToRegister">
-                새 핫플레이스 등록
-            </button>
+            <div class="mt-3 text-center fs-2" role="alert">
+                핫플레이스
             </div>
-            <div class="search-right">
-            <div class="input-group">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ selectedOption }}
+            <hr class="center-hr">
+            <div class="search">
+                <div class="search-left">
+                <button type="button" class="btn btn-outline-primary" @click="pushToRegister">
+                    새 핫플레이스 등록
                 </button>
-                <ul class="dropdown-menu">
-                    <li v-for="option in selectOption" :key="option.value">
-                    <a class="dropdown-item" href="#" @click="changeSearchType(option)">{{ option.text }}</a>
-                    </li>
-                </ul>
-                <input type="text" class="form-control" v-model="param.keyword" placeholder="검색어..." @keyup.enter="searchHotPlaceList(param.keyword)">
-                <button type="button" class="btn btn-outline-secondary" id="basic-addon2" @click="searchHotPlaceList(param.keyword)">
-                검색
-                </button>
+                </div>
+                <div class="search-right">
+                    <div class="input-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ selectedOption }}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li v-for="option in selectOption" :key="option.value">
+                            <a class="dropdown-item" href="#" @click="changeSearchType(option)">{{ option.text }}</a>
+                            </li>
+                        </ul>
+                        <input type="text" class="form-control" v-model="param.keyword" placeholder="검색어..." @keyup.enter="searchHotPlaceList(param.keyword)">
+                        <button type="button" class="btn btn-outline-secondary" id="basic-addon2" @click="searchHotPlaceList(param.keyword)">
+                        검색
+                        </button>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
-        <div>
             <div>
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">핫플</th>
-                    <th scope="col">작성자</th>
-                    <th scope="col">유형</th>
-                    <th scope="col">이미지</th>
-                    <th scope="col">tel</th>
-                    <th scope="col">설명</th>
-                </tr>
-                </thead>
-                <tbody id="travelInfoTable">
-                <tr v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
-                    <td>
-                    <router-link
-                        :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId } }"
-                        class="article-title link-dark"
-                    >
-                        {{ hotplace.title }}
-                    </router-link>
-                    </td>
-                    <td>{{ hotplace.userId }}</td>
-                    <td>{{ hotplace.contentType }}</td>
-                    <td>
-                        <img v-if="thumbnailUrls[hotplace.hotplaceId]" :src="thumbnailUrls[hotplace.hotplaceId]" alt="Thumbnail">
-                        <span v-else></span>
-                    </td>
-                    <td>{{ hotplace.tel }}</td>
-                </tr>
-                </tbody>
-            </table>
+                <div class="mt-5 mb-4">
+                    <!-- <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">핫플</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">유형</th>
+                            <th scope="col">이미지</th>
+                            <th scope="col">tel</th>
+                            <th scope="col">설명</th>
+                        </tr>
+                        </thead>
+                        <tbody id="travelInfoTable">
+                        <tr v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
+                            <td>
+                                <router-link
+                                    :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId } }"
+                                    class="article-title link-dark"
+                                >
+                                    {{ hotplace.title }}
+                                </router-link>
+                            </td>
+                            <td>{{ hotplace.userId }}</td>
+                            <td>{{ hotplace.contentType }}</td>
+                            <td>
+                                <img v-if="thumbnailUrls[hotplace.hotplaceId]" :src="thumbnailUrls[hotplace.hotplaceId]" alt="Thumbnail">
+                                <span v-else></span>
+                            </td>
+                            <td>{{ hotplace.tel }}</td>
+                        </tr>
+                        </tbody>
+                    </table> -->
+                    <div class="row">
+                        <div class="col-md-4" v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
+                            <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" :src="thumbnailUrls[hotplace.hotplaceId] || 'default-thumbnail.jpg'" alt="Thumbnail">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="card-title mb-0">{{ hotplace.title }}</h5>
+                                    <span class="badge bg-secondary">{{ hotplace.contentType }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <router-link :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId }}" class="btn btn-sm btn-outline-secondary">View</router-link>
+                                    </div>
+                                    <small class="text-muted">{{ hotplace.userId }}</small>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-box">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example" id="travelInfoListPage">
+                        <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage - 1)">이전</button>
+                        <button
+                            type="button"
+                            v-for="n in totalPages"
+                            :key="n"
+                            :class="['btn', (currentPage === n ? 'btn-primary' : 'btn-outline-primary')]"
+                            style="margin-top: 0;"
+                            @click="changePage(n)"
+                        >
+                            {{ n }}
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage + 1)">다음</button>
+                    </div>
+                </div>
             </div>
-            <div class="btn-box">
-            <div class="btn-group" role="group" aria-label="Basic outlined example" id="travelInfoListPage">
-                <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage - 1)">이전</button>
-                <button
-                type="button"
-                v-for="n in totalPages"
-                :key="n"
-                :class="['btn', (currentPage === n ? 'btn-primary' : 'btn-outline-primary')]"
-                style="margin-top: 0;"
-                @click="changePage(n)"
-                >
-                {{ n }}
-                </button>
-                <button type="button" class="btn btn-outline-primary" @click="changePage(currentPage + 1)">다음</button>
-            </div>
-            </div>
-        </div>
         </div>
     </div>
 </template>
@@ -219,4 +238,12 @@ function thumbnail(hotplaceId) {
 </style>
 
 <style scoped src="@/assets/css/hotplace.css">
+</style>
+
+<style>
+.card-img-top {
+  width: 100%; /* 이미지가 카드의 너비에 맞게 조정됩니다. */
+  height: 250px; /* 이미지 높이를 200px로 고정합니다. */
+  object-fit: cover; /* 이미지가 비율을 유지하면서 지정된 높이와 너비에 맞게 조정됩니다. */
+}
 </style>
