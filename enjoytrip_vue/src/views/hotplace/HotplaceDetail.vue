@@ -25,18 +25,26 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mb-3">
-                    <button v-if="userId == hotplace.userId" type="button" class="btn btn-outline-danger mb-3 ms-1" @click="">
+                    <button v-if="userId == hotplace.userId" type="button" class="btn btn-outline-danger mb-3 ms-1" @click="onDeleteHotplace">
                         삭제
                     </button>
                     <button type="button" class="btn btn-outline-primary mb-3 ms-1" @click="moveList">
                         목록으로
                     </button>
                 </div>
-                <div mb-3>
-                    <!-- 이미지 -->
+                <div class="imageContainer mb-5">
+                    <div v-for="(imgSrc, index) in imgSrcs" :key="index" class="hotplace-image mb-3">
+                        <img :src="imgSrc" class="img-fluid" alt="Hotplace image">
+                    </div>
                 </div>
-                <div class="text-secondary mb-3">
+                <div class="mb-3">
                     {{ hotplace.description }}
+                </div>
+                <div class="mb-3">
+                    <b>주소 : </b>{{ hotplace.addr1 }}
+                </div>
+                <div v-if="hotplace.tel" class="mb-3">
+                    <b>Tel. </b>{{ hotplace.tel }}
                 </div>
             </div>
         </div>
@@ -44,15 +52,11 @@
 </div>
 </template>
 
-<style scoped>
-    @import "@/assets/css/hotplace.css";
-</style>
-  
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
-import { getHotplaceDetail } from '@/api/hotplace';
+import { getHotplaceDetail, listHotplaceImage, deleteHotplace } from '@/api/hotplace';
 import { useUserStore } from '@/stores/user-store';
 
 const userStore = useUserStore();
@@ -66,18 +70,25 @@ const userId = computed(() => {
 const route = useRoute();
 const router = useRouter();
 const hotplace = ref({});
-const loading = ref(true);
+const imgSrcs = ref([]);
 
 onMounted(() => {
     getHotplaceDetail(
         route.params.hotplaceId,
         (response) => {
             hotplace.value = response.data;
-            loading.value = false;
         },
         (error) => {
             console.error('Failed to load hotplace details', error);
-            loading.value = false;
+        }
+    );
+    listHotplaceImage(
+        route.params.hotplaceId,
+        (response) => {
+            imgSrcs.value = response.data;
+        },
+        (error) => {
+            console.error('Failed to load hotplace details', error);
         }
     );
 });
@@ -100,4 +111,41 @@ const contentTypeColors = {
 const getBadgeClass = (contentTypeId) => {
     return contentTypeColors[contentTypeId] || 'bg-secondary'; // 기본 색상은 secondary
 };
+
+function onDeleteHotplace() {
+    deleteHotplace(
+        hotplace.value.hotplaceId,
+        (response) => {
+            if (response.status == 200) moveList();
+            alert("삭제되었습니다.");
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+}
 </script>
+
+<style scoped>
+@import "@/assets/css/hotplace.css";
+
+.images-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hotplace-image {
+    width: 80%;
+}
+
+.img-fluid {
+    width: 100%;
+}
+</style>

@@ -30,11 +30,21 @@ function getHotplaceDetail(hotplaceId, success, fail) {
     http.get(`/hotplace/view?hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
+function listHotplaceImage(hotplaceId, success, fail) {
+    http.get(`/hotplace/image?hotplaceId=${hotplaceId}`).then(success).catch(fail);
+}
+
+function deleteHotplace(hotplaceId, success, fail) {
+    http.delete(`/hotplace/delete?hotplaceId=${hotplaceId}`).then(success).catch(fail);
+}
+
 export {
     registHotplace,
     listHotplaces,
     listContentTypes,
     searchHotplaces,
     getThumbnail,
-    getHotplaceDetail
+    getHotplaceDetail,
+    listHotplaceImage,
+    deleteHotplace
 }
