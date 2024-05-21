@@ -32,7 +32,7 @@
                 <div class="mt-5 mb-4">
                     <div class="row">
                         <div class="col-md-4" v-for="hotplace in hotplaces" :key="hotplace.hotplaceId">
-                            <div class="card mb-4 box-shadow">
+                            <div class="card mb-4 box-shadow" @click="moveToDetail(hotplace.hotplaceId)">
                                 <img class="card-img-top" :src="thumbnailUrls[hotplace.hotplaceId] || 'default-thumbnail.jpg'" alt="Thumbnail">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -204,17 +204,8 @@ watchEffect(() => {
     });
 });
 
-function thumbnail(hotplaceId) {
-    getThumbnail(
-        hotplaceId,
-        ({ data }) => {
-            console.log("data :", data);
-            return data;
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
+function moveToDetail(hotplaceId) {
+    router.push({ name: 'hotplaceDetail', params: { hotplaceId: hotplaceId }});
 }
 </script>
 
@@ -230,5 +221,16 @@ function thumbnail(hotplaceId) {
     width: 100%; /* 이미지가 카드의 너비에 맞게 조정됩니다. */
     height: 250px; /* 이미지 높이를 200px로 고정합니다. */
     object-fit: cover; /* 이미지가 비율을 유지하면서 지정된 높이와 너비에 맞게 조정됩니다. */
+}
+
+.card {
+    transition: all 0.3s ease; /* 애니메이션 효과를 부드럽게 만듭니다 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과를 추가합니다 */
+    cursor: pointer; /* 마우스 포인터를 손 모양으로 변경합니다 */
+}
+
+.card:hover {
+    transform: scale(1.05); /* 카드를 5% 크게 만듭니다 */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* 호버시 그림자를 더 진하게 합니다 */
 }
 </style>
