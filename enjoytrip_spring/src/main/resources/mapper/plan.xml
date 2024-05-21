@@ -6,6 +6,7 @@
     <resultMap id="planMap" type="com.ssafy.dto.PlanDto">
         <result property="planNo" column="plan_no" />
         <result property="seqNo" column="seq_no" />
+        <result property="title" column="title"/>
         <result property="contentId" column="content_id" />
     </resultMap>
     
@@ -28,7 +29,7 @@
 
     <!-- 계획 조회 -->
     <select id="getPlan" resultMap="planMap">
-        SELECT plan_no, seq_no, content_id
+        SELECT plan_no, seq_no, title, content_id
         FROM plan_seq
         WHERE plan_no = #{planNo}
         ORDER BY seq_no ASC
