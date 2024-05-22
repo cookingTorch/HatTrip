@@ -65,7 +65,7 @@ const logout = () => {
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <router-link :to="{ name: 'planView' }" class="dropdown-item">
+                    <router-link :to="{ name: 'planCreate' }" class="dropdown-item">
                       여행 계획 작성
                     </router-link>
                   </li>
