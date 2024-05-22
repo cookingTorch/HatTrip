@@ -14,6 +14,7 @@ import HotplaceRegister from '@/views/hotplace/HotplaceRegister.vue';
 import HotplaceView from '@/views/hotplace/HotplaceView.vue'
 import PlanCreate from '@/views/plan/PlanCreate.vue'
 import PlanView from '@/views/plan/PlanView.vue'
+import PlanDetail from '@/views/plan/PlanDetail.vue'
 import HotplaceDetail from '@/views/hotplace/HotplaceDetail.vue';
 
 const router = createRouter({
@@ -85,10 +86,16 @@ const router = createRouter({
       component: PlanView,
     },
     {
+      path: '/plan/detail/:planNo',
+      name: 'planDetail',
+      component: PlanDetail,
+    },
+    {
       path: '/hotplace/datail/:hotplaceId',
       name: 'hotplaceDetail',
       component: HotplaceDetail
     },
+    
   ]
 });
 
@@ -116,38 +123,3 @@ router.beforeEach(async (to, from, next) => {
 });
 
 export default router;
-
-// const onlyAuthUser = async (to, from, next) => {
-//   const userStore = useUserStore();
-//   const { userInfo, isLogin } = storeToRefs(userStore);
-//   const { getUserInfo } = userStore;
-//
-//   let token = sessionStorage.getItem("accessToken");
-//
-//   if (token) {
-//     await userStore.checkInitialLoginState();
-//     if (!isLogin) {
-//       next({ name: "login" });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     // 세션 스토리지에서 토큰 확인 실패 시 로그인 페이지로 리다이렉트
-//     next({ name: 'login' });
-//   }
-// };
-
-// router.beforeEach((to, from, next) => { // 페이지를 이동하기 전에 호출되는 함수
-//   const userStore = useUserStore();
-//   if (to.fullPath !== "/login" && to.fullPath !== "/" && to.fullPath !== "/regist" && !userStore.isLoggedIn) {
-//     // /login으로 가고 있지 않고 로그인되어 있지 않으면 /login으로 redirect
-//     // 로그인하지 않은 상태에서 /를 요청하는 경우 (프로젝트가 처음 실행될 때)
-//     next("/login");
-//   } else if (to.fullPath == "/login" && userStore.isLoggedIn) {
-//     // /login으로 가고 있고 로그인되어 있으면 /으로 redirect
-//     // 로그인한 상태에서 /login을 요청하는 경우
-//     next("/");
-//   } else {
-//     next();
-//   }
-// });

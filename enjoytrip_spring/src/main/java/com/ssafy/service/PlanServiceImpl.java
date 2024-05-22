@@ -34,10 +34,10 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public List<PlanUserDto> getPlanUser(int planNo) throws Exception {
-		return planMapper.getPlanUser(planNo);
+	public List<PlanUserDto> getPlanUser(String userId) throws Exception {
+		return planMapper.getPlanUser(userId);
 	}
-
+ 
 	@Override
 	public void deletePlan(int planNo) throws Exception {
 		planMapper.deletePlan(planNo);

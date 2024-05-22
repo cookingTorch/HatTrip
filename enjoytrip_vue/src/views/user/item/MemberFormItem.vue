@@ -45,11 +45,15 @@ const UserData = reactive({
 const router = useRouter();
 
 onMounted(() => {
-  console.log(userInfo.value.username);
-  isUseId.value = true;
-  UserData.userId = userInfo.value.userId;
-  UserData.userName = userInfo.value.userName;
-  UserData.email = userInfo.value.email;
+  
+  if(props.type==='modify'){
+    isUseId.value = true;
+    UserData.userId = userInfo.value.userId;
+    UserData.userName = userInfo.value.userName;
+    UserData.email = userInfo.value.email;
+  } else {
+    isUseId.value = false;
+  }
 });
 
 // if (props.type === "modify") {
@@ -70,7 +74,8 @@ const register = () => {
   joinMember(
     UserData,
     () => {
-      router.push("/");
+      console.log("router push");
+      router.push({ name: 'home' });
     },
     (error) => {
       console.log(error);
@@ -82,15 +87,12 @@ const modify = () => {
   modifyMember(
     UserData,
     () => {
-      router.push("/");
+      router.push({ name: 'home' });
     },
     (error) => {
       console.log(error);
     }
   );
-  userInfo.value.userId = UserData.userId;
-  userInfo.value.userName = UserData.userName;
-  userInfo.value.email = UserData.email;
 };
 </script>
   

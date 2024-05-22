@@ -20,6 +20,7 @@ async function logout(userid, success, fail) {
 
 function joinMember(member, success, fail) {
   http.post(`/member/join`, JSON.stringify(member)).then(success).catch(fail);
+  console.log("join")
 }
 
 function modifyMember(member, success, fail){

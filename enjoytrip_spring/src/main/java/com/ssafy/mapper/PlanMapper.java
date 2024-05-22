@@ -15,7 +15,7 @@ public interface PlanMapper {
 	void addPlanUser(PlanUserDto planUserDto) throws SQLException;
 	
 	List<PlanDto> getPlan(int planNo) throws SQLException;
-	List<PlanUserDto> getPlanUser(int planNo) throws SQLException;
+	List<PlanUserDto> getPlanUser(String userId) throws SQLException;
 	
 	void deletePlan(int planNo) throws SQLException;
 	void deletePlanUser(int planNo) throws SQLException;

@@ -14,8 +14,7 @@ function getPlan(id, success, fail) {
 }
 
 function getPlanUser(id, success, fail) {
-    console.log("get plan User", id);
-    http.post(`/plan/getPlanUser?planNo=${id}`).then(success).catch(fail);
+    http.get(`/plan/getPlanUser?userId=${id}`).then(success).catch(fail);
   }
 
 function deletePlan(id, success, fail) {

@@ -101,16 +101,16 @@ public class PlanController {
         }
 	}
 	
-	@Operation(summary = "계획에 포함된 유저 조회", description = "계획번호에 맞는 모든 계획 유저 조회")
+	@Operation(summary = "유저로 계획 조회", description = "유저 id에 해당하는 모든 여행계획 조회")
     @ApiResponses(value = { 
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
             })
     @GetMapping(value="/getPlanUser")
-    public ResponseEntity<?> getPlanUser(@RequestParam(value="planNo") int planNo){
+    public ResponseEntity<?> getPlanUser(@RequestParam(value="userId") String userId){
 		try {
-			List<PlanUserDto> list = planService.getPlanUser(planNo);
+			List<PlanUserDto> list = planService.getPlanUser(userId);
 			if(list != null && !list.isEmpty()) {
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
@@ -120,7 +120,7 @@ public class PlanController {
             }
 		} catch (Exception e) {
             return exceptionHandling(e);
-        }
+        } 
 	}
 	
 	@Operation(summary = "여행계획 삭제", description = "여행계획삭제")

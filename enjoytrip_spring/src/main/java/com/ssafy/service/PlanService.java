@@ -10,7 +10,7 @@ public interface PlanService {
 	void addPlanUser(PlanUserDto planUserDto) throws Exception;
 	
 	List<PlanDto> getPlan(int planNo) throws Exception;
-	List<PlanUserDto> getPlanUser(int planNo) throws Exception;
+	List<PlanUserDto> getPlanUser(String userId) throws Exception;
 	
 	void deletePlan(int planNo) throws Exception;
 	void deletePlanUser(int planNo) throws Exception;

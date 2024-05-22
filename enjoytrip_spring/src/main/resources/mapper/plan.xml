@@ -29,7 +29,7 @@
 
     <!-- 계획 조회 -->
     <select id="getPlan" resultMap="planMap">
-        SELECT plan_no, seq_no, title, content_id
+        SELECT plan_no, seq_no, content_id
         FROM plan_seq
         WHERE plan_no = #{planNo}
         ORDER BY seq_no ASC
@@ -37,9 +37,9 @@
 
     <!-- 계획 유저 조회 -->
     <select id="getPlanUser" resultMap="planUserMap">
-        SELECT plan_no, user_id
+        SELECT plan_no, user_id, title
         FROM plan_user
-        WHERE plan_no = #{planNo}
+        WHERE user_id = #{userId}
     </select>
     
     <!-- 삭제 -->
