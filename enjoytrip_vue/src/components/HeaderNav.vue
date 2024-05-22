@@ -16,15 +16,14 @@ const { userInfo } = storeToRefs(userStore);
 const { isLogin } = storeToRefs(userStore);
 const { userLogout } = userStore;
 
-onMounted(async () => {
-  if ((!isLogin.value) && sessionStorage.getItem('accessToken')) {
-    await userStore.checkInitialLoginState();
+onMounted(() => {
+  if ((!isLogin) && sessionStorage.getItem('accessToken')) {
+    userStore.checkInitialLoginState();
   }
-  console.log("isLogin :", isLogin.value);
 });
 
 const userName = computed(() => {
-  return userInfo.value && isLogin.value ? userInfo.value.userName : '게스트';
+  return userInfo.value && isLogin ? userInfo.value.userName : '게스트';
 });
 
 const logout = () => {
@@ -60,10 +59,22 @@ const logout = () => {
                     지역별여행지
                 </router-link>
               </li>
-              <li class="nav-item">
-                <router-link :to="{ name: 'planView' }" class="nav-link">
-                    여행계획
-                </router-link>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  여행계획
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <router-link :to="{ name: 'planView' }" class="dropdown-item">
+                      여행 계획 작성
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{ name: 'planView' }" class="dropdown-item">
+                      여행 계획 보기
+                    </router-link>
+                  </li>
+                </ul>
               </li>
               <li class="nav-item">
                 <router-link :to="{ name: 'hotplace' }" class="nav-link">
