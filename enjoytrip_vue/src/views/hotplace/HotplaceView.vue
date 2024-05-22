@@ -12,6 +12,9 @@
                 </button>
                 </div>
                 <div class="search-right">
+                    <button type="button" :class="['btn', param.likes ? 'btn-danger' : 'btn-outline-danger', 'me-2']" @click="toggleShowLikes">
+                        찜목록
+                    </button>
                     <div class="input-group">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ selectedOption }}
@@ -43,7 +46,7 @@
                                         <small class="text-muted">{{ hotplace.userId }}</small>
                                         <div class="btn-group">
                                             <button class="btn btn-sm" @click.stop="toggleLike(hotplace)">
-                                                <i :class="[hotplace.liked ? 'fas' : 'far', 'fa-heart', 'like-icon']" @click="toggleLike"></i>
+                                                <i :class="[hotplace.liked ? 'fas' : 'far', 'fa-heart', 'like-icon']"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -88,10 +91,11 @@ import {
 
 const router = useRouter();
 const userStore = useUserStore();
+const { isLogin } = storeToRefs(userStore);
 const { userInfo } = storeToRefs(userStore);
 
 const userId = computed(() => {
-  return userInfo.value && isLogin ? userInfo.value.userId : 'Guest';
+  return userInfo.value && isLogin.value ? userInfo.value.userId : 'Guest';
 });
 
 const selectOption = ref([
@@ -121,10 +125,16 @@ const currentPage = ref(1);
 const totalPages = ref(0);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const param = ref({
+    loginUser: userId.value,
+    likes: false,
     pageNo: 1,
     spp: VITE_ARTICLE_LIST_SIZE,
     searchType: "",
     keyword: "",
+});
+
+watchEffect(() => {
+    param.value.loginUser = userId.value;
 });
 
 const thumbnailUrls = ref({});
@@ -163,10 +173,7 @@ const changePage = (val) => {
     listHotplaces(
         param.value,
         ({ data }) => {
-            hotplaces.value = data.content.map(hotplace => ({
-                ...hotplace,
-                liked: false  // liked 속성 추가
-            }));
+            hotplaces.value = data.content;
             currentPage.value = data.pageNo;
             totalPages.value = data.totalPages;
             console.log(data);
@@ -188,7 +195,10 @@ const searchHotPlaceList = (keyword) => {
         alert("검색 조건을 선택해주세요.");
         return; // 함수 실행을 여기서 중단
     }
+    param.value.pageNo = 1;
     const queryParam = {
+        loginUser: param.value.loginUser,
+        likes: param.value.likes,
         pageNo: param.value.pageNo,
         searchType: encodeURIComponent(param.value.searchType),
         keyword: encodeURIComponent(param.value.keyword),
@@ -196,13 +206,13 @@ const searchHotPlaceList = (keyword) => {
     searchHotplaces(
         queryParam,
         ({ data }) => {
-            hotplaces.value = data.content.map(hotplace => ({
-                ...hotplace,
-                liked: false  // liked 속성 추가
-            }));
+            hotplaces.value = data.content;
             currentPage.value = data.pageNo;
             totalPages.value = data.totalPages;
             console.log(data);
+            isSearched.value = true;
+            lastSearch.value.searchType = queryParam.searchType;
+            lastSearch.value.keyword = queryParam.keyword;
         },
         (error) => {
             console.log(error);
@@ -232,8 +242,10 @@ function moveToDetail(hotplaceId) {
 
 const toggleLike = (hotplace) => {
     if (hotplace.liked) {
+        console.log("user :", userId.value);
+        console.log("clicked :", hotplace);
         deleteLike(
-            userId,
+            userId.value,
             hotplace.hotplaceId,
             (response) => {
                 if (response.status == 200) {
@@ -245,8 +257,10 @@ const toggleLike = (hotplace) => {
             }
         );
     } else {
+        console.log("user :", userId);
+        console.log("clicked :", hotplace);
         postLike(
-            userId,
+            userId.value,
             hotplace.hotplaceId,
             (response) => {
                 if (response.status == 200) {
@@ -259,6 +273,60 @@ const toggleLike = (hotplace) => {
         );
     }
     hotplace.liked = !hotplace.liked;  // 직접적으로 객체의 liked 상태를 토글
+};
+
+const isSearched = ref(false);
+const lastSearch = ref({
+    loginUser: userId.value,
+    likes: false,
+    pageNo: 1,
+    searchType: '',
+    keyword: ''
+});
+
+watchEffect(() => {
+    lastSearch.value.loginUser = param.value.loginUser;
+});
+
+watchEffect(() => {
+    lastSearch.value.likes = param.value.likes;
+});
+
+const toggleShowLikes = () => {
+    if (param.value.likes) {
+        lastSearch.value.likes = false;
+        param.value.likes = false;
+    } else {
+        lastSearch.value.likes = true;
+        param.value.likes = true;
+    }
+    if (isSearched.value) {
+        searchHotplaces(
+            lastSearch.value,
+            ({ data }) => {
+                hotplaces.value = data.content;
+                currentPage.value = data.pageNo;
+                totalPages.value = data.totalPages;
+                console.log(data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    } else {
+        listHotplaces(
+            lastSearch.value,
+            ({ data }) => {
+                hotplaces.value = data.content;
+                currentPage.value = data.pageNo;
+                totalPages.value = data.totalPages;
+                console.log(data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }
 };
 </script>
 

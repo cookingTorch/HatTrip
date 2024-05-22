@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -75,16 +76,17 @@ public class HotplaceServiceImpl implements HotplaceService {
             stream.write(bytes);
 		}
 	}
-
+	
 	@Override
 	public PagedDto<HotplaceDto> listHotplaces(int pageNo, int placesPerPage) throws Exception {
+		return listHotplaces(pageNo, placesPerPage, null, false);
+	}
+
+	@Override
+	public PagedDto<HotplaceDto> listHotplaces(int pageNo, int placesPerPage, String loginUser, boolean likes) throws Exception {
         int offset = (pageNo - 1) * placesPerPage;
-        List<HotplaceDto> content = hotplaceMapper.listHotplaces(offset, placesPerPage);
-        for (HotplaceDto hotplaceDto : content) {
-        	hotplaceDto.setContentType(hotplaceMapper.getContentType(hotplaceDto.getContentTypeId()));
-        	hotplaceDto.setDescription(hotplaceMapper.getDescriptionByHotplaceId(hotplaceDto.getHotplaceId()));
-        }
-        int totalElements = hotplaceMapper.countHotplaces();
+        List<HotplaceDto> content = hotplaceMapper.listHotplaces(offset, placesPerPage, loginUser, likes);
+        int totalElements = hotplaceMapper.countHotplaces(loginUser, likes);
         return new PagedDto<>(content, pageNo, placesPerPage, totalElements);
 	}
 
@@ -92,8 +94,6 @@ public class HotplaceServiceImpl implements HotplaceService {
 	public HotplaceDto getHotplace(int hotplaceId) throws Exception {
 		HotplaceDto hotplaceDto;
 		hotplaceDto = hotplaceMapper.getHotplace(hotplaceId);
-		hotplaceDto.setContentType(hotplaceMapper.getContentType(hotplaceDto.getContentTypeId()));
-		hotplaceDto.setDescription(hotplaceMapper.getDescriptionByHotplaceId(hotplaceId));
 		return hotplaceDto;
 	}
 
@@ -106,11 +106,16 @@ public class HotplaceServiceImpl implements HotplaceService {
 	public List<ContentTypeDto> listContentTypes() throws Exception {
 		return hotplaceMapper.listContentTypes();
 	}
-
+	
 	@Override
 	public PagedDto<HotplaceDto> searchHotplaces(int pageNo, int placesPerPage, String searchType, String keyword) throws Exception {
+		return searchHotplaces(pageNo, placesPerPage, searchType, keyword, null, false);
+	}
+
+	@Override
+	public PagedDto<HotplaceDto> searchHotplaces(int pageNo, int placesPerPage, String searchType, String keyword, String loginUser, boolean likes) throws Exception {
 	    if (keyword.isBlank()) {
-	        return listHotplaces(pageNo, placesPerPage);
+	        return listHotplaces(pageNo, placesPerPage, loginUser, likes);
 	    }
 	    System.out.println(searchType);
 		System.out.println(keyword);
@@ -119,15 +124,17 @@ public class HotplaceServiceImpl implements HotplaceService {
 		int totalElements;
 	    if (searchType.equals("content_type")) {
 	    	List<Integer> contentTypeIds = hotplaceMapper.searchContentTypeIds(keyword);
-	    	content = hotplaceMapper.searchHotplacesByTypeIds(offset, placesPerPage, contentTypeIds);
-	    	totalElements = hotplaceMapper.countSearchedPlacesByTypeIds(contentTypeIds);
+	    	if (contentTypeIds.isEmpty()) {
+	    		content = new ArrayList<>();
+	    		totalElements = 0;
+	    	} else {
+	    		content = hotplaceMapper.searchHotplacesByTypeIds(offset, placesPerPage, contentTypeIds, loginUser, likes);
+	    		totalElements = hotplaceMapper.countSearchedPlacesByTypeIds(contentTypeIds, loginUser, likes);
+	    	}
 	    } else {
-	    	content = hotplaceMapper.searchHotplaces(offset, placesPerPage, searchType, keyword);
-	    	totalElements = hotplaceMapper.countSearchedPlaces(searchType, keyword);
+	    	content = hotplaceMapper.searchHotplaces(offset, placesPerPage, searchType, keyword, loginUser, likes);
+	    	totalElements = hotplaceMapper.countSearchedPlaces(searchType, keyword, loginUser, likes);
 	    }
-        for (HotplaceDto hotplaceDto : content) {
-        	hotplaceDto.setContentType(hotplaceMapper.getContentType(hotplaceDto.getContentTypeId()));
-        }
 	    return new PagedDto<>(content, pageNo, placesPerPage, totalElements);
 	}
 

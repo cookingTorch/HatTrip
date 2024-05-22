@@ -123,11 +123,13 @@ public class HotplaceController {
 			})
 	@GetMapping(value="/list")
     public ResponseEntity<?> list(
-    	@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-    	@RequestParam(value = "placesPerPage", defaultValue = "3") int placesPerPage) {
+	    	@RequestParam(value = "loginUser", defaultValue = "") String loginUser,
+	    	@RequestParam(value = "likes", defaultValue = "false") boolean likes,
+	    	@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+	    	@RequestParam(value = "placesPerPage", defaultValue = "3") int placesPerPage) {
 		
         try {
-            PagedDto<HotplaceDto> result = hotplaceService.listHotplaces(pageNo, placesPerPage);
+            PagedDto<HotplaceDto> result = hotplaceService.listHotplaces(pageNo, placesPerPage, loginUser, likes);
             if(result != null) {
             	HttpHeaders headers = new HttpHeaders();
             	headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
@@ -188,14 +190,16 @@ public class HotplaceController {
 			})
 	@GetMapping(value="/search")
 	public ResponseEntity<?> search(
+	    	@RequestParam(value = "loginUser", defaultValue = "") String loginUser,
+	    	@RequestParam(value = "likes", defaultValue = "false") boolean likes,
 	    	@RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
 	    	@RequestParam(value = "placesPerPage", defaultValue = "3") int placesPerPage,
 			@RequestParam(value = "searchType") String searchType,
 		    @RequestParam(value = "keyword") String keyword) {
 	    try {
 	    	keyword = URLDecoder.decode(keyword, "UTF-8");
-	        PagedDto<HotplaceDto> result = hotplaceService.searchHotplaces(pageNo, placesPerPage, searchType, keyword);
-	        if(result!=null && !result.getContent().isEmpty()) {
+	        PagedDto<HotplaceDto> result = hotplaceService.searchHotplaces(pageNo, placesPerPage, searchType, keyword, loginUser, likes);
+	        if(result != null) {
 	            HttpHeaders headers = new HttpHeaders();
 	            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 	            return ResponseEntity.ok().headers(headers).body(result);

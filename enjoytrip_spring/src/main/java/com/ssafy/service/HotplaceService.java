@@ -14,10 +14,12 @@ public interface HotplaceService {
 	void updateImageSrc(HotplaceDto hotplaceDto) throws Exception;
 	void saveFiles(List<MultipartFile> files, String imageSrc) throws Exception;
 	PagedDto<HotplaceDto> listHotplaces(int pageNo, int placesPerPage) throws Exception;
+	PagedDto<HotplaceDto> listHotplaces(int pageNo, int placesPerPage, String loginUser, boolean likes) throws Exception;
 	HotplaceDto getHotplace(int hotplaceId) throws Exception;
 	void deleteHotplace(int hotplaceId) throws Exception;
 	List<ContentTypeDto> listContentTypes() throws Exception;
 	PagedDto<HotplaceDto> searchHotplaces(int pageNo, int placesPerPage, String searchType, String keyword) throws Exception;
+	PagedDto<HotplaceDto> searchHotplaces(int pageNo, int placesPerPage, String searchType, String keyword, String loginUser, boolean likes) throws Exception;
 	String getThumbNail(int hotplaceId) throws Exception;
 	List<String> listHotplaceImages(int hotplaceId) throws Exception;
 	void addLike(String userId, int hotplaceId) throws Exception;

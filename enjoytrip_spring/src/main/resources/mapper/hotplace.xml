@@ -5,18 +5,20 @@
 <mapper namespace="com.ssafy.mapper.HotplaceMapper">
 
 	<resultMap id="hotplaceMap" type="com.ssafy.dto.HotplaceDto">
-		<result property="hotplaceId" column="hotplace_id" />
-		<result property="userId" column="user_id" />
-		<result property="contentTypeId" column="content_type_id" />
-		<result property="title" column="title" />
-		<result property="addr1" column="addr1" />
-		<result property="addr2" column="addr2" />
-		<result property="tel" column="tel" />
-		<result property="imageSrc" column="image_src" />
-		<result property="sidoCode" column="sido_code" />
-		<result property="gugunCode" column="gugun_code" />
-		<result property="latitude" column="latitude" />
-		<result property="longitude" column="longitude" />
+	    <result property="hotplaceId" column="hotplace_id" />
+	    <result property="userId" column="user_id" />
+	    <result property="contentTypeId" column="content_type_id" />
+	    <result property="title" column="title" />
+	    <result property="addr1" column="addr1" />
+	    <result property="addr2" column="addr2" />
+	    <result property="tel" column="tel" />
+	    <result property="imageSrc" column="image_src" />
+	    <result property="sidoCode" column="sido_code" />
+	    <result property="gugunCode" column="gugun_code" />
+	    <result property="latitude" column="latitude" />
+	    <result property="longitude" column="longitude" />
+	    <result property="contentType" column="content_type" />
+	    <result property="description" column="description" />
 	</resultMap>
 	
 	<resultMap id="contentTypeMap" type="com.ssafy.dto.ContentTypeDto">
@@ -59,24 +61,38 @@
 	</update>
 	
 	<!-- listHotplaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
-	<select id="listHotplaces" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
-		SELECT *
-		FROM hotplace_info
-		ORDER BY hotplace_id DESC
-		LIMIT #{placesPerPage} OFFSET #{offset}
+	<select id="listHotplaces" resultMap="hotplaceMap">
+	    SELECT h.*, c.content_type, d.overview AS description,
+	        CASE WHEN l.user_id IS NOT NULL THEN true ELSE false END AS liked
+	    FROM hotplace_info h
+	    JOIN content_type c ON h.content_type_id = c.content_type_id
+	    LEFT JOIN hotplace_description d ON h.hotplace_id = d.hotplace_id
+	    LEFT JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    <if test="likes">
+	        WHERE l.user_id = #{loginUser}
+	    </if>
+	    ORDER BY h.hotplace_id DESC
+	    LIMIT #{placesPerPage} OFFSET #{offset}
 	</select>
 	
 	<!-- countHotplaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="countHotplaces">
-		SELECT COUNT(*)
-		FROM hotplace_info
+	    SELECT COUNT(*)
+	    FROM hotplace_info h
+	    <if test="likes">
+	        JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    </if>
 	</select>
 	
 	<!-- getHotplace. id는 repo클래스의 메소드 이름과 일치시킨다. -->
-	<select id="getHotplace" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
-		SELECT *
-		FROM hotplace_info
-		WHERE hotplace_id = #{hotplaceId}
+	<select id="getHotplace" resultMap="hotplaceMap">
+	    SELECT h.*, c.content_type, d.overview AS description,
+	        CASE WHEN l.user_id IS NOT NULL THEN true ELSE false END AS liked
+	    FROM hotplace_info h
+	    JOIN content_type c ON h.content_type_id = c.content_type_id
+	    LEFT JOIN hotplace_description d ON h.hotplace_id = d.hotplace_id
+	    LEFT JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    WHERE h.hotplace_id = #{hotplaceId}
 	</select>
 	
 	<!-- deleteHotplace. id는 repo클래스의 메소드 이름과 일치시킨다. -->
@@ -85,13 +101,6 @@
 	    WHERE hotplace_id = #{hotplaceId}
 	</delete>
 	
-	<!-- getContentType. id는 repo클래스의 메소드 이름과 일치시킨다. -->
-	<select id="getContentType">
-		SELECT content_type
-		FROM content_type
-		WHERE content_type_id = #{contentTypeId}
-	</select>
-	
 	<!-- listContentTypes. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="listContentTypes" resultType="com.ssafy.dto.ContentTypeDto" resultMap="contentTypeMap">
 		SELECT *
@@ -99,21 +108,33 @@
 	</select>
 	
 	<!-- searchHotplaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
-	<select id="searchHotplaces" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
-		SELECT *
-		FROM hotplace_info
-		WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
-		ORDER BY hotplace_id DESC
-		LIMIT #{placesPerPage} OFFSET #{offset}
+	<select id="searchHotplaces" resultMap="hotplaceMap">
+	    SELECT h.*, c.content_type, d.overview AS description,
+	        CASE WHEN l.user_id IS NOT NULL THEN true ELSE false END AS liked
+	    FROM hotplace_info h
+	    JOIN content_type c ON h.content_type_id = c.content_type_id
+	    LEFT JOIN hotplace_description d ON h.hotplace_id = d.hotplace_id
+	    LEFT JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    <where>
+	        <if test="likes">
+	            l.user_id = #{loginUser}
+	        </if>
+	        AND ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+	    </where>
+	    ORDER BY h.hotplace_id DESC
+	    LIMIT #{placesPerPage} OFFSET #{offset}
 	</select>
-	
+
 	<!-- countSearchedPlaces. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="countSearchedPlaces">
-		SELECT COUNT(*)
-		FROM hotplace_info
-		WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+	    SELECT COUNT(*)
+	    FROM hotplace_info h
+	    <if test="likes">
+	        JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    </if>
+	    WHERE ${searchType} LIKE CONCAT('%', #{keyword}, '%')
 	</select>
-	
+
 	<!-- searchContentTypeIds. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="searchContentTypeIds">
 		SELECT content_type_id
@@ -123,38 +144,43 @@
 	</select>
 	
 	<!-- searchHotplacesByTypeIds. id는 repo클래스의 메소드 이름과 일치시킨다. -->
-	<select id="searchHotplacesByTypeIds" resultType="com.ssafy.dto.HotplaceDto" resultMap="hotplaceMap">
-		SELECT *
-		FROM hotplace_info
-		WHERE content_type_id IN
-		<foreach item="item" index="index" collection="contentTypeIds" open="(" separator="," close=")">
-			#{item}
-		</foreach>
-		ORDER BY hotplace_id DESC
-		LIMIT #{placesPerPage} OFFSET #{offset}
+	<select id="searchHotplacesByTypeIds" resultMap="hotplaceMap">
+	    SELECT h.*, c.content_type, d.overview AS description,
+	        CASE WHEN l.user_id IS NOT NULL THEN true ELSE false END AS liked
+	    FROM hotplace_info h
+	    JOIN content_type c ON h.content_type_id = c.content_type_id
+	    LEFT JOIN hotplace_description d ON h.hotplace_id = d.hotplace_id
+	    LEFT JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    <where>
+	        <if test="likes">
+	            l.user_id = #{loginUser}
+	        </if>
+	        AND h.content_type_id IN
+	        <foreach item="item" index="index" collection="contentTypeIds" open="(" separator="," close=")">
+	            #{item}
+	        </foreach>
+	    </where>
+	    ORDER BY h.hotplace_id DESC
+	    LIMIT #{placesPerPage} OFFSET #{offset}
 	</select>
-	
+
 	<!-- countSearchedPlacesByTypeIds. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="countSearchedPlacesByTypeIds">
-		SELECT COUNT(*)
-		FROM hotplace_info
-		WHERE content_type_id IN
-		<foreach item="item" index="index" collection="contentTypeIds" open="(" separator="," close=")">
-			#{item}
-		</foreach>
+	    SELECT COUNT(*)
+	    FROM hotplace_info h
+	    <if test="likes">
+	        JOIN hotplace_like l ON h.hotplace_id = l.hotplace_id AND l.user_id = #{loginUser}
+	    </if>
+	    WHERE content_type_id IN
+	    <foreach item="item" index="index" collection="contentTypeIds" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
 	</select>
-	
+
 	<!-- getImageSrcByHotplaceId. id는 repo클래스의 메소드 이름과 일치시킨다. -->
 	<select id="getImageSrcByHotplaceId">
 		SELECT image_src
 		FROM hotplace_info
-		WHERE hotplace_id = #{hotplaceId}
-	</select>
-	
-	<!-- getDescriptionByHotplaceId. id는 repo클래스의 메소드 이름과 일치시킨다. -->
-	<select id="getDescriptionByHotplaceId">
-		SELECT overview
-		FROM hotplace_description
 		WHERE hotplace_id = #{hotplaceId}
 	</select>
 	
@@ -170,5 +196,13 @@
 	    WHERE user_id = #{userId}
 	    AND hotplace_id = #{hotplaceId}
 	</delete>
+	
+	<!-- likeExists. id는 repo클래스의 메소드 이름과 일치시킨다. -->
+	<select id="likeExists">
+		SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM hotplace_like
+        WHERE user_id = #{userId}
+        AND hotplace_id = #{hotplaceId}
+	</select>
 	
 </mapper>

@@ -17,20 +17,18 @@ public interface HotplaceMapper {
 	void registHotplace(HotplaceDto hotplaceDto) throws SQLException;
 	void registDescription(int hotplaceId, String description) throws SQLException;
 	void updateImageSrc(HotplaceDto hotplaceDto) throws SQLException;
-	List<HotplaceDto> listHotplaces(int offset, int placesPerPage) throws SQLException;
-	int countHotplaces() throws SQLException;
+	List<HotplaceDto> listHotplaces(int offset, int placesPerPage, String loginUser, boolean likes) throws SQLException;
+	int countHotplaces(String loginUser, boolean likes) throws SQLException;
 	HotplaceDto getHotplace(int hotplaceId) throws SQLException;
 	void deleteHotplace(int hotplaceId) throws SQLException;
-	String getContentType(int contentTypeId) throws SQLException;
 	List<ContentTypeDto> listContentTypes() throws SQLException;
-	List<HotplaceDto> searchHotplaces(int offset, int placesPerPage, String searchType, String keyword) throws SQLException;
-	int countSearchedPlaces(String searchType, String keyword);
+	List<HotplaceDto> searchHotplaces(int offset, int placesPerPage, String searchType, String keyword, String loginUser, boolean likes) throws SQLException;
+	int countSearchedPlaces(String searchType, String keyword, String loginUser, boolean likes);
 	List<Integer> searchContentTypeIds(String keyword) throws SQLException;
-	List<HotplaceDto> searchHotplacesByTypeIds(int offset, int placesPerPage, List<Integer> contentTypeIds) throws SQLException;
-	int countSearchedPlacesByTypeIds(List<Integer> contentTypeIds) throws IOException;
+	List<HotplaceDto> searchHotplacesByTypeIds(int offset, int placesPerPage, List<Integer> contentTypeIds, String loginUser, boolean likes) throws SQLException;
+	int countSearchedPlacesByTypeIds(List<Integer> contentTypeIds, String loginUser, boolean likes) throws IOException;
 	String getImageSrcByHotplaceId(int hotplaceId) throws SQLException;
-	String getDescriptionByHotplaceId(int hotplaceId) throws SQLException;
-	public void addLike(String userId, int hotplaceId) throws SQLException;
-	public void deleteLike(String userId, int hotplaceId) throws SQLException;
+	void addLike(String userId, int hotplaceId) throws SQLException;
+	void deleteLike(String userId, int hotplaceId) throws SQLException;
 	
 }

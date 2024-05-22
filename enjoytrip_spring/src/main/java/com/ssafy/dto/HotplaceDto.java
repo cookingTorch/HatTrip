@@ -16,12 +16,13 @@ public class HotplaceDto {
 	private double latitude;
 	private double longitude;
 	private String description;
+	private boolean liked;
 	
 	public HotplaceDto() {
 	}
 
 	public HotplaceDto(int hotplaceId, String userId, int contentTypeId, String contentType, String title, String addr1, String addr2,
-			String tel, String imageSrc, int sidoCode, int gugunCode, double latitude, double longitude) {
+			String tel, String imageSrc, int sidoCode, int gugunCode, double latitude, double longitude, boolean liked) {
 		super();
 		this.hotplaceId = hotplaceId;
 		this.userId = userId;
@@ -36,6 +37,7 @@ public class HotplaceDto {
 		this.gugunCode = gugunCode;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.liked = liked;
 	}
 
 	public HotplaceDto(String userId, int contentTypeId, String title, String addr1, String tel,
@@ -160,6 +162,14 @@ public class HotplaceDto {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
 	}
 
 }

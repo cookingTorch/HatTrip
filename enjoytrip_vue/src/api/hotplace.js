@@ -39,10 +39,14 @@ function deleteHotplace(hotplaceId, success, fail) {
 }
 
 function postLike(userId, hotplaceId, success, fail) {
+    console.log("userId :", userId);
+    console.log("likeId :", hotplaceId);
     http.post(`/hotplace/like?userId=${userId}&hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
 function deleteLike(userId, hotplaceId, success, fail) {
+    console.log("userId :", userId);
+    console.log("likeId :", hotplaceId);
     http.delete(`/hotplace/unlike?userId=${userId}&hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
