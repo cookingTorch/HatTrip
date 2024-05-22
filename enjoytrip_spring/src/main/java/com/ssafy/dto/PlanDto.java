@@ -4,26 +4,16 @@ public class PlanDto {
 	
 	private int planNo;
 	private int seqNo;
-	private String title;
 	private int contentId;
 	
-	public PlanDto(int planNo, int seqNo, String title, int contentId) {
+	public PlanDto(int planNo, int seqNo, int contentId) {
 		super();
 		this.planNo = planNo;
-		this.title = title;
 		this.seqNo = seqNo;
 		this.contentId = contentId;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getPlanNo() {
+		public int getPlanNo() {
 		return planNo;
 	}
 

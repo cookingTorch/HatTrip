@@ -4,12 +4,23 @@ public class PlanUserDto {
 	
 	private int planNo;
 	private String userId;
+	private String title;
 	
-	public PlanUserDto(int planNo, String userId) {
+	public PlanUserDto(int planNo, String userId, String title) {
 		super();
 		this.planNo = planNo;
 		this.userId = userId;
+		this.title = title;
 	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	
 	public int getPlanNo() {
 		return planNo;

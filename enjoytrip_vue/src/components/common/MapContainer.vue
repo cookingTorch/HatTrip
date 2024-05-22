@@ -94,7 +94,7 @@ const selectedType= ref(-1);
 const trips= ref([]);
 const mapContainer= ref(null);
 const travelPlan= ref([]);
-const planTitle = ref("");
+const planTitle = ref(new Date().toISOString());
 
 const props = defineProps({ type: String })
 
@@ -193,13 +193,20 @@ const searchByCondition = () => {
                 else
                     markers = displayMarker(positions, map, false, false);
                 
-                if(props.type=='plan'){
-                    for(var i=0; i<markers.length; i++){
-                        kakao.maps.event.addListener(markers[i], 'click', function() {
-                            alert('marker click!');
+                    if(props.type=='plan'){
+                            markers.forEach((marker, index) => {
+                                kakao.maps.event.addListener(marker, 'click', () => {
+                                    travelPlan.value.push({
+                                        imgUrl: data[index].imgUrl,
+                                        contentId: data[index].contentId,
+                                        title: data[index].title,
+                                        latitude: data[index].latitude,
+                                        longitude: data[index].longitude,
+                                        contentTypeId: data[index].contentTypeId
+                                    });
+                            });
                         });
                     }
-                }
                 map.setCenter(positions[0].latlng);
                 map.setLevel(7);
             },
@@ -301,13 +308,13 @@ const submitTravelPlan = () => {
                 planCombined.planList.push({
                     planNo: lastPlanNo,
                     seqNo: seqNo,
-                    title: planTitle.value,
                     contentId: travel.contentId,
                 })
                 seqNo++;
             });
-        
+            
             planCombined.planUserList.push({
+                title: planTitle.value,
                 planNo: lastPlanNo,
                 userId: userId,
             })
