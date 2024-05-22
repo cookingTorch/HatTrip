@@ -13,6 +13,7 @@ import AttractionInfo from '@/views/attraction/AttractionInfo.vue'
 import HotplaceRegister from '@/views/hotplace/HotplaceRegister.vue';
 import HotplaceView from '@/views/hotplace/HotplaceView.vue'
 import PlanCreate from '@/views/plan/PlanCreate.vue'
+import PlanView from '@/views/plan/PlanView.vue'
 import HotplaceDetail from '@/views/hotplace/HotplaceDetail.vue';
 
 const router = createRouter({
@@ -77,6 +78,11 @@ const router = createRouter({
       path: '/plan/addPlan',
       name: 'planCreate',
       component: PlanCreate
+    },
+    {
+      path: '/plan/planView',
+      name: 'planView',
+      component: PlanView,
     },
     {
       path: '/hotplace/datail/:hotplaceId',
