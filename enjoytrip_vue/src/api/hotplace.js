@@ -25,9 +25,9 @@ function getThumbnail(hotplaceId, success, fail) {
     http.get(`/hotplace/thumbnail?hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
-function getHotplaceDetail(hotplaceId, success, fail) {
+function getHotplaceDetail(hotplaceId, loginUser, success, fail) {
     console.log("id :", hotplaceId);
-    http.get(`/hotplace/view?hotplaceId=${hotplaceId}`).then(success).catch(fail);
+    http.get(`/hotplace/view?loginUser=${loginUser}&hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
 function listHotplaceImage(hotplaceId, success, fail) {

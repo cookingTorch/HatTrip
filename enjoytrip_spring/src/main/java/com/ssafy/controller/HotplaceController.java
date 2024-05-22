@@ -149,10 +149,12 @@ public class HotplaceController {
 	        @ApiResponse(responseCode = "500", description = "Internal Server Error")
 	        })
 	@GetMapping(value="/view")
-	public ResponseEntity<?> view(@RequestParam(value="hotplaceId") int hotplaceId) {
+	public ResponseEntity<?> view(
+			@RequestParam(value = "loginUser", defaultValue = "") String loginUser,
+			@RequestParam(value = "hotplaceId") int hotplaceId) {
 	    
 	    try {
-	        HotplaceDto hotplaceDto = hotplaceService.getHotplace(hotplaceId);
+	        HotplaceDto hotplaceDto = hotplaceService.getHotplace(hotplaceId, loginUser);
 	        if(hotplaceDto != null) {
 	            HttpHeaders headers = new HttpHeaders();
 	            headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

@@ -7,9 +7,16 @@
         <hr class="center-hr">
         <div>
             <div class="row my-2">
-                <div class="d-flex align-items-center">
-                    <h2 class="text-secondary">{{ hotplace.title }}</h2>
-                    <span :class="['badge', getBadgeClass(hotplace.contentTypeId), 'ms-3']">{{ hotplace.contentType }}</span>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <h2 class="text-secondary">{{ hotplace.title }}</h2>
+                        <span :class="['badge', getBadgeClass(hotplace.contentTypeId), 'ms-3']">{{ hotplace.contentType }}</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-sm" @click.stop="toggleLike(hotplace)">
+                            <i :class="[hotplace.liked ? 'fas' : 'far', 'fa-heart', 'like-icon']"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -63,8 +70,14 @@ import HotplaceImageMap from './item/HotplaceImageMap.vue';
 import { ref, computed, onMounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
-import { getHotplaceDetail, listHotplaceImage, deleteHotplace } from '@/api/hotplace';
 import { useUserStore } from '@/stores/user-store';
+import {
+    getHotplaceDetail,
+    listHotplaceImage,
+    deleteHotplace,
+    postLike,
+    deleteLike
+} from '@/api/hotplace';
 
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);
@@ -82,6 +95,7 @@ const imgSrcs = ref([]);
 onMounted(() => {
     getHotplaceDetail(
         route.params.hotplaceId,
+        userId.value,
         (response) => {
             hotplace.value = response.data;
         },
@@ -131,6 +145,41 @@ function onDeleteHotplace() {
         }
     );
 }
+
+const toggleLike = (hotplace) => {
+    if (hotplace.liked) {
+        console.log("user :", userId.value);
+        console.log("clicked :", hotplace);
+        deleteLike(
+            userId.value,
+            hotplace.hotplaceId,
+            (response) => {
+                if (response.status == 200) {
+                    console.log("삭제");
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    } else {
+        console.log("user :", userId);
+        console.log("clicked :", hotplace);
+        postLike(
+            userId.value,
+            hotplace.hotplaceId,
+            (response) => {
+                if (response.status == 200) {
+                    console.log("추가");
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }
+    hotplace.liked = !hotplace.liked;  // 직접적으로 객체의 liked 상태를 토글
+};
 </script>
 
 <style scoped>
@@ -154,5 +203,9 @@ function onDeleteHotplace() {
 
 .img-fluid {
     width: 100%;
+}
+
+.like-icon {
+    font-size: 27px;
 }
 </style>

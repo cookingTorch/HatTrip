@@ -355,10 +355,6 @@ const toggleShowLikes = () => {
     box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* 호버시 그림자를 더 진하게 합니다 */
 }
 
-.fas {
-    color: rgb(238, 47, 47);
-}
-
 .like-icon {
     font-size: 20px;
 }

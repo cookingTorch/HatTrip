@@ -91,9 +91,9 @@ public class HotplaceServiceImpl implements HotplaceService {
 	}
 
 	@Override
-	public HotplaceDto getHotplace(int hotplaceId) throws Exception {
+	public HotplaceDto getHotplace(int hotplaceId, String loginUser) throws Exception {
 		HotplaceDto hotplaceDto;
-		hotplaceDto = hotplaceMapper.getHotplace(hotplaceId);
+		hotplaceDto = hotplaceMapper.getHotplace(hotplaceId, loginUser);
 		return hotplaceDto;
 	}
 

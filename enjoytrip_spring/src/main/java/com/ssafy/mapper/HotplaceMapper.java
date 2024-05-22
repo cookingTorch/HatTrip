@@ -19,7 +19,7 @@ public interface HotplaceMapper {
 	void updateImageSrc(HotplaceDto hotplaceDto) throws SQLException;
 	List<HotplaceDto> listHotplaces(int offset, int placesPerPage, String loginUser, boolean likes) throws SQLException;
 	int countHotplaces(String loginUser, boolean likes) throws SQLException;
-	HotplaceDto getHotplace(int hotplaceId) throws SQLException;
+	HotplaceDto getHotplace(int hotplaceId, String loginUser) throws SQLException;
 	void deleteHotplace(int hotplaceId) throws SQLException;
 	List<ContentTypeDto> listContentTypes() throws SQLException;
 	List<HotplaceDto> searchHotplaces(int offset, int placesPerPage, String searchType, String keyword, String loginUser, boolean likes) throws SQLException;
