@@ -71,7 +71,7 @@ const logout = () => {
                   </li>
                   <li>
                     <router-link :to="{ name: 'planView' }" class="dropdown-item">
-                      여행 계획 보기
+                      나의 여행 계획
                     </router-link>
                   </li>
                 </ul>
