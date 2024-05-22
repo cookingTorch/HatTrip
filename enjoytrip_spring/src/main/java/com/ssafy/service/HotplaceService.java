@@ -20,5 +20,7 @@ public interface HotplaceService {
 	PagedDto<HotplaceDto> searchHotplaces(int pageNo, int placesPerPage, String searchType, String keyword) throws Exception;
 	String getThumbNail(int hotplaceId) throws Exception;
 	List<String> listHotplaceImages(int hotplaceId) throws Exception;
+	void addLike(String userId, int hotplaceId) throws Exception;
+	void deleteLike(String userId, int hotplaceId) throws Exception;
 	
 }

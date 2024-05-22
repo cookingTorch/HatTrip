@@ -16,14 +16,15 @@ const { userInfo } = storeToRefs(userStore);
 const { isLogin } = storeToRefs(userStore);
 const { userLogout } = userStore;
 
-onMounted(() => {
-  if ((!isLogin) && sessionStorage.getItem('accessToken')) {
-    userStore.checkInitialLoginState();
+onMounted(async () => {
+  if ((!isLogin.value) && sessionStorage.getItem('accessToken')) {
+    await userStore.checkInitialLoginState();
   }
+  console.log("isLogin :", isLogin.value);
 });
 
 const userName = computed(() => {
-  return userInfo.value && isLogin ? userInfo.value.userName : '게스트';
+  return userInfo.value && isLogin.value ? userInfo.value.userName : '게스트';
 });
 
 const logout = () => {

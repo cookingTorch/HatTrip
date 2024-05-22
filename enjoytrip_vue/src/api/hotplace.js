@@ -38,6 +38,14 @@ function deleteHotplace(hotplaceId, success, fail) {
     http.delete(`/hotplace/delete?hotplaceId=${hotplaceId}`).then(success).catch(fail);
 }
 
+function postLike(userId, hotplaceId, success, fail) {
+    http.post(`/hotplace/like?userId=${userId}&hotplaceId=${hotplaceId}`).then(success).catch(fail);
+}
+
+function deleteLike(userId, hotplaceId, success, fail) {
+    http.delete(`/hotplace/unlike?userId=${userId}&hotplaceId=${hotplaceId}`).then(success).catch(fail);
+}
+
 export {
     registHotplace,
     listHotplaces,
@@ -46,5 +54,7 @@ export {
     getThumbnail,
     getHotplaceDetail,
     listHotplaceImage,
-    deleteHotplace
+    deleteHotplace,
+    postLike,
+    deleteLike
 }

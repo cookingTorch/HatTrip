@@ -40,10 +40,12 @@
                                         <span :class="['badge', getBadgeClass(hotplace.contentTypeId)]">{{ hotplace.contentType }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <router-link :to="{ name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId }}" class="btn btn-sm btn-outline-secondary">View</router-link>
-                                        </div>
                                         <small class="text-muted">{{ hotplace.userId }}</small>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm" @click.stop="toggleLike(hotplace)">
+                                                <i :class="[hotplace.liked ? 'fas' : 'far', 'fa-heart', 'like-icon']" @click="toggleLike"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -72,11 +74,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, computed, onMounted, watchEffect } from "vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
-import { listHotplaces, searchHotplaces, getThumbnail } from "@/api/hotplace";
+import { useUserStore } from '@/stores/user-store';
+import {
+    listHotplaces,
+    searchHotplaces,
+    getThumbnail,
+    postLike,
+    deleteLike
+} from "@/api/hotplace";
 
 const router = useRouter();
+const userStore = useUserStore();
+const { userInfo } = storeToRefs(userStore);
+
+const userId = computed(() => {
+  return userInfo.value && isLogin ? userInfo.value.userId : 'Guest';
+});
 
 const selectOption = ref([
     { text: "검색조건", value: "" },
@@ -147,7 +163,10 @@ const changePage = (val) => {
     listHotplaces(
         param.value,
         ({ data }) => {
-            hotplaces.value = data.content;
+            hotplaces.value = data.content.map(hotplace => ({
+                ...hotplace,
+                liked: false  // liked 속성 추가
+            }));
             currentPage.value = data.pageNo;
             totalPages.value = data.totalPages;
             console.log(data);
@@ -177,7 +196,10 @@ const searchHotPlaceList = (keyword) => {
     searchHotplaces(
         queryParam,
         ({ data }) => {
-            hotplaces.value = data.content;
+            hotplaces.value = data.content.map(hotplace => ({
+                ...hotplace,
+                liked: false  // liked 속성 추가
+            }));
             currentPage.value = data.pageNo;
             totalPages.value = data.totalPages;
             console.log(data);
@@ -207,6 +229,37 @@ watchEffect(() => {
 function moveToDetail(hotplaceId) {
     router.push({ name: 'hotplaceDetail', params: { hotplaceId: hotplaceId }});
 }
+
+const toggleLike = (hotplace) => {
+    if (hotplace.liked) {
+        deleteLike(
+            userId,
+            hotplace.hotplaceId,
+            (response) => {
+                if (response.status == 200) {
+                    console.log("삭제");
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    } else {
+        postLike(
+            userId,
+            hotplace.hotplaceId,
+            (response) => {
+                if (response.status == 200) {
+                    console.log("추가");
+                }
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }
+    hotplace.liked = !hotplace.liked;  // 직접적으로 객체의 liked 상태를 토글
+};
 </script>
 
 <style scoped>
@@ -232,5 +285,13 @@ function moveToDetail(hotplaceId) {
 .card:hover {
     transform: scale(1.05); /* 카드를 5% 크게 만듭니다 */
     box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* 호버시 그림자를 더 진하게 합니다 */
+}
+
+.fas {
+    color: rgb(238, 47, 47);
+}
+
+.like-icon {
+    font-size: 20px;
 }
 </style>

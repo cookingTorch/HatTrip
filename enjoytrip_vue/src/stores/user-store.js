@@ -14,11 +14,11 @@ export const useUserStore = defineStore("user", () => {
   const userInfo = ref(null);
   const isValidToken = ref(false);
 
-  const checkInitialLoginState = () => {
+  const checkInitialLoginState = async () => {
     const accessToken = sessionStorage.getItem("accessToken");
     if (accessToken) {
       const decoded = jwtDecode(accessToken);
-      getUserInfo(accessToken).then(() => {
+      await getUserInfo(accessToken).then(() => {
         isLogin.value = true;
         isValidToken.value = true;
       }).catch((error) => {

@@ -30,5 +30,7 @@ public interface HotplaceMapper {
 	int countSearchedPlacesByTypeIds(List<Integer> contentTypeIds) throws IOException;
 	String getImageSrcByHotplaceId(int hotplaceId) throws SQLException;
 	String getDescriptionByHotplaceId(int hotplaceId) throws SQLException;
+	public void addLike(String userId, int hotplaceId) throws SQLException;
+	public void deleteLike(String userId, int hotplaceId) throws SQLException;
 	
 }

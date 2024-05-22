@@ -184,4 +184,14 @@ public class HotplaceServiceImpl implements HotplaceService {
             return List.of(); // 에러가 발생했을 경우 빈 리스트 반환
         }
     }
+
+	@Override
+	public void addLike(String userId, int hotplaceId) throws Exception {
+		hotplaceMapper.addLike(userId, hotplaceId);
+	}
+
+	@Override
+	public void deleteLike(String userId, int hotplaceId) throws Exception {
+		hotplaceMapper.deleteLike(userId, hotplaceId);
+	}
 }

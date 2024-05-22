@@ -286,6 +286,40 @@ public class HotplaceController {
 		
     }
 	
+	@Operation(summary = "핫플레이스 좋아요", description = "핫플레이스 좋아요 추가")
+	@ApiResponses(value = { 
+	        @ApiResponse(responseCode = "200", description = "OK"),
+	        @ApiResponse(responseCode = "400", description = "Bad Request"),
+	        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	        })
+	@PostMapping("/like")
+    public ResponseEntity<?> like(@RequestParam(value="userId") String userId,
+    		@RequestParam(value="hotplaceId") int hotplaceId) {
+        try {
+            hotplaceService.addLike(userId, hotplaceId);
+            return ResponseEntity.ok("핫플레이스 좋아요가 추가되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("핫플레이스 좋아요 추가에 실패했습니다.");
+        }
+    }
+	
+	@Operation(summary = "핫플레이스 좋아요 취소", description = "핫플레이스 좋아요 삭제")
+	@ApiResponses(value = { 
+	        @ApiResponse(responseCode = "200", description = "OK"),
+	        @ApiResponse(responseCode = "400", description = "Bad Request"),
+	        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	        })
+	@DeleteMapping("/unlike")
+    public ResponseEntity<?> unlike(@RequestParam(value="userId") String userId,
+    		@RequestParam(value="hotplaceId") int hotplaceId) {
+        try {
+            hotplaceService.deleteLike(userId, hotplaceId);
+            return ResponseEntity.ok("핫플레이스 좋아요가 삭제되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("핫플레이스 좋아요 삭제에 실패했습니다.");
+        }
+    }
+	
     private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 //		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
