@@ -34,6 +34,18 @@ public class AttractionDto {
 		this.longitude = longitude;
 	}
 
+	public AttractionDto(int contentId, int contentTypeId, String title, String addr1, String imgUrl, double latitude,
+			double longitude) {
+		super();
+		this.contentId = contentId;
+		this.contentTypeId = contentTypeId;
+		this.title = title;
+		this.addr1 = addr1;
+		this.imgUrl = imgUrl;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
 	public AttractionDto(int contentTypeId, int sido, int gugun) {
 		super();
 		this.contentTypeId = contentTypeId;

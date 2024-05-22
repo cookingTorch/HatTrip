@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.dto.AttractionDto;
 import com.ssafy.dto.PlanCombinedDto;
 import com.ssafy.dto.PlanDto;
 import com.ssafy.dto.PlanUserDto;
@@ -88,7 +89,7 @@ public class PlanController {
     @GetMapping(value="/getPlan")
     public ResponseEntity<?> getPlan(@RequestParam(value="planNo") int planNo){
 		try {
-			List<PlanDto> list = planService.getPlan(planNo);
+			List<AttractionDto> list = planService.getPlan(planNo);
 			if(list != null && !list.isEmpty()) {
 				HttpHeaders headers = new HttpHeaders();
 				headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

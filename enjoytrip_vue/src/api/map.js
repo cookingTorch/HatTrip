@@ -56,7 +56,6 @@ const displayMarker = (positions, map, clickable, linedraw) => {
 
         markers.push(marker);
 
-        
         // 다음 마커가 있을 때만 선을 그립니다
         if (linedraw && i < positions.length - 1) {
             // 현재 마커와 다음 마커를 연결하는 선을 그립니다

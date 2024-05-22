@@ -14,6 +14,21 @@
         <result property="title" column="title"/>
         <result property="userId" column="user_id" />
     </resultMap>
+    
+    <resultMap id="attractionMap" type="com.ssafy.dto.AttractionDto">
+		<result property="contentId" column="content_id" />
+		<result property="contentTypeId" column="content_type_id" />
+		<result property="title" column="title" />
+		<result property="addr1" column="addr1" />
+		<result property="addr2" column="addr2" />
+		<result property="zipCode" column="zipcode" />
+		<result property="tel" column="tel" />
+		<result property="imgUrl" column="first_image" />
+		<result property="sido" column="sido_code" />
+		<result property="gugun" column="gugun_code" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+	</resultMap>
 
     <!-- 계획 추가 -->
     <insert id="addPlan" parameterType="com.ssafy.dto.PlanDto">
@@ -27,12 +42,21 @@
         VALUES (#{planNo}, #{userId}, #{title})
     </insert>
 
-    <!-- 계획 조회 -->
+    <!-- 계획 조회 
     <select id="getPlan" resultMap="planMap">
         SELECT plan_no, seq_no, content_id
         FROM plan_seq
         WHERE plan_no = #{planNo}
         ORDER BY seq_no ASC
+    </select>
+    -->
+    
+    <select id="getPlan" resultMap="attractionMap">
+        SELECT b.content_id as content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, latitude, longitude
+		FROM plan_seq a left join attraction_info b
+		on a.content_id=b.content_id
+		where plan_no=#{planNo}
+		ORDER BY a.seq_no ASC
     </select>
 
     <!-- 계획 유저 조회 -->

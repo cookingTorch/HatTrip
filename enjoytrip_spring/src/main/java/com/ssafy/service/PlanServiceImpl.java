@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.dto.AttractionDto;
 import com.ssafy.dto.PlanDto;
 import com.ssafy.dto.PlanUserDto;
 import com.ssafy.mapper.PlanMapper;
@@ -28,8 +29,8 @@ public class PlanServiceImpl implements PlanService{
 		planMapper.addPlanUser(planUserDto);
 	}
 
-	@Override
-	public List<PlanDto> getPlan(int planNo) throws Exception {
+	@Override 
+	public List<AttractionDto> getPlan(int planNo) throws Exception {
 		return planMapper.getPlan(planNo);
 	}
 
