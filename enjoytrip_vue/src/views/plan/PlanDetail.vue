@@ -65,6 +65,11 @@ const loadScript = () => {
     document.head.appendChild(script);
 }
 
+const moveCenter = (lat, lng) => {
+    map.setCenter(new kakao.maps.LatLng(lat, lng))
+    map.setLevel(6)
+}
+
 const fetchPlan = () => {
 
     const options = {
@@ -79,7 +84,7 @@ const fetchPlan = () => {
             console.log(planNo, " get " ,data);
             travelPlan.value = data;
 
-            data.forEach((trip) => {
+            data.forEach((trip, index) => {
                 let markerInfo = {
                     imgUrl: trip.imgUrl,
                     contentId: trip.contentId,
@@ -88,6 +93,10 @@ const fetchPlan = () => {
                     contentTypeId: trip.contentTypeId,
                 };
 
+                if(index==0){
+                    moveCenter(trip.latitude, trip.longitude);
+                }
+
                 positions.push(markerInfo);
             })
             
@@ -95,6 +104,7 @@ const fetchPlan = () => {
                 markers[i].setMap(null)
             
             markers = displayMarker(positions, map, false, true);
+
         }
     )
 }
