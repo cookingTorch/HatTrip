@@ -17,7 +17,6 @@ const displayMarker = (positions, map, clickable, linedraw) => {
     var imgSrc = "https://velog.velcdn.com/images/gangintheremark/post/f43775aa-d206-423b-933b-615f374a8263/image.png";
     for (var i = 0; i < positions.length; i++) {
         var contentTypeId = positions[i].contentTypeId;
-        console.log(contentTypeId)
         switch (contentTypeId) {
             case 12:
                 imgSrc = "https://velog.velcdn.com/images/gangintheremark/post/bf5d1a2c-f698-4364-8d9a-72f5c47881db/image.png";
@@ -47,7 +46,6 @@ const displayMarker = (positions, map, clickable, linedraw) => {
 
         var imageSize = new kakao.maps.Size(30, 30)
         var markerImage = new kakao.maps.MarkerImage(imgSrc, imageSize)
-        console.log(positions[i])
         var marker = new kakao.maps.Marker({
             map,
             contentId: positions[i].contentId,

@@ -17,8 +17,8 @@
 
     <!-- 계획 추가 -->
     <insert id="addPlan" parameterType="com.ssafy.dto.PlanDto">
-        INSERT INTO plan_seq (plan_no, seq_no, content_id)
-        VALUES (#{planNo}, #{seqNo}, #{contentId})
+        INSERT INTO plan_seq (plan_no, seq_no, content_id, title)
+        VALUES (#{planNo}, #{seqNo}, #{contentId}, #{title})
     </insert>
 
     <!-- 계획에 유저 추가 -->

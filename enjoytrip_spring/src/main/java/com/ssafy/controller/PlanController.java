@@ -1,6 +1,7 @@
 package com.ssafy.controller;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -58,6 +59,25 @@ public class PlanController {
             return exceptionHandling(e);
         }
     }
+	
+	@Operation(summary = "마지막 index 조회", description = "마지막 index + 1 return")
+	@ApiResponses(value = { 
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Page Not Found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            })
+	@GetMapping(value="/getLastId")
+	public ResponseEntity<?> getLastId(){
+		try {
+			int id = planService.getLastIdx();
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+            return ResponseEntity.ok().headers(headers).body(id);
+			
+		} catch (Exception e) {
+            return exceptionHandling(e);
+        }
+	}
 	
 	@Operation(summary = "계획 조회", description = "계획번호에 맞는 모든 계획 조회")
     @ApiResponses(value = { 

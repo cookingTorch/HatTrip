@@ -37,7 +37,7 @@
                 <tbody>
                 <tr v-for="trip in trips" :key="trip.id" @click="moveCenter(trip.latitude, trip.longitude)">
                     <td><img :src="trip.imgUrl" width="200px" v-if="trip.imgUrl">
-                        <span v-else class="gray">존재하는 이미지가 없습니다.</span></td>
+                        <img :src="noImg" width="200px" v-else></td>
                     <td>{{ trip.title }}</td>
                     <td>{{ trip.addr1 }} {{ trip.addr2 }}</td>
                 </tr>
@@ -45,14 +45,29 @@
             </table>
             </div>
         </div>
-        <div class="col-md-6 row flex" v-if="type==='plan'">
-            <h2>여행 계획</h2>
-            <ul>
-                <tr v-for="travel in travelPlan" :key="travel.contentId">
-                    <td>{{ travel.contentId }}</td>                    
-                </tr>
-            </ul>
-            <button @click="submitTravelPlan">여행 계획 제출</button>
+        <div class="col-md-6 flex" v-if="type==='plan'">
+            <div style="height:100px">
+                <input type="text" class="plan-title" v-model="planTitle" placeholder="여행계획 제목">
+                <div class="plan-buttons">
+                    <button @click="clearTravelPlan">초기화</button>
+                    <button @click="submitTravelPlan">제출</button>
+                </div>
+            </div>
+            <div class="scrollable-container">
+                <table>
+                    <tr v-for="travel in travelPlan" :key="travel.contentId">
+                        <td class="col-md-3">
+                            <div class="row flex">
+                            <img :src="travel.imgUrl" alt="Image" width="50%" v-if="travel.imgUrl">
+                            <img :src="noImg" width="50%" v-else>
+                            </div>
+                        </td>
+                        <td class="col-md-3">
+                            <div class="row flex">{{ travel.title }}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -60,7 +75,16 @@
 <script setup>
 import { getSido, getGugun, getList, getListByPos } from "@/api/attraction.js"
 import { types, displayMarker } from "@/api/map.js"
-import { ref, onMounted } from "vue";
+import { getLastId, addPlan } from "@/api/plan.js"
+import { ref, onMounted, computed } from "vue"; 
+import { storeToRefs } from "pinia";
+import { useUserStore } from '@/stores/user-store';
+import noImg from '@/assets/img/noImg.jpg';
+
+const userStore = useUserStore();
+const { userInfo } = storeToRefs(userStore);
+
+const userId = userInfo.value.userId;
 
 const sidos= ref([]);
 const guguns= ref([]);
@@ -70,6 +94,7 @@ const selectedType= ref(-1);
 const trips= ref([]);
 const mapContainer= ref(null);
 const travelPlan= ref([]);
+const planTitle = ref("");
 
 const props = defineProps({ type: String })
 
@@ -89,7 +114,6 @@ const fetchSidos = () => {
     getSido(
         ({ data }) => {
             sidos.value = data;
-            console.log(sidos.value);
         },
         (error) => {
             console.log(error);
@@ -105,7 +129,6 @@ const fetchGugun = () => {
         selectedSido.value,
         ({ data }) => {
             guguns.value = data;
-            console.log(guguns.value);
         },
         (error) => {
             console.log(error);
@@ -150,7 +173,6 @@ const searchByCondition = () => {
             search,
             ({ data }) => {
                 trips.value = data;
-                console.log(trips.value);
                 positions = [];
 
                 data.forEach((trip) => {
@@ -197,7 +219,6 @@ const searchByPos = () => {
     let maxLat = bounds.getNorthEast().getLat();
     let maxLon = bounds.getNorthEast().getLng();
 
-    console.log(minLat, maxLat, minLon, maxLon);
 
     const pos = {
         minLat: minLat,
@@ -210,11 +231,11 @@ const searchByPos = () => {
         pos,
         ({ data }) => {
             trips.value = data;
-            console.log(trips.value);
             positions = [];
 
             data.forEach((trip) => {
                 let markerInfo = {
+                    imgUrl: trip.imgUrl,
                     contentId: trip.contentId,
                     title: trip.title,
                     latlng: new kakao.maps.LatLng(trip.latitude, trip.longitude),
@@ -233,11 +254,18 @@ const searchByPos = () => {
                 markers = displayMarker(positions, map, false, false);
 
             if(props.type=='plan'){
-                for(var i=0; i<markers.length; i++){
-                    kakao.maps.event.addListener(markers[i], 'click', function(){
-                        travelPlan.value.push(markers[i]);
-                    });
-                }
+                markers.forEach((marker, index) => {
+                    kakao.maps.event.addListener(marker, 'click', () => {
+                        travelPlan.value.push({
+                            imgUrl: data[index].imgUrl,
+                            contentId: data[index].contentId,
+                            title: data[index].title,
+                            latitude: data[index].latitude,
+                            longitude: data[index].longitude,
+                            contentTypeId: data[index].contentTypeId
+                        });
+                });
+            });
             }
         },
         (error) => {
@@ -252,9 +280,71 @@ const moveCenter = (lat, lng) => {
     map.setLevel(2)
 }
 
+const clearTravelPlan = () => {
+    travelPlan.value = [];
+}
+
+const submitTravelPlan = () => {
+
+    getLastId(
+        ({ data }) =>{
+            console.log("lastid : " ,data);
+            let lastPlanNo=data;
+            let planCombined = {
+                planList : [],
+                planUserList : []
+            };
+                    
+            let seqNo = 0;
+        
+            travelPlan.value.forEach((travel) => {
+                planCombined.planList.push({
+                    planNo: lastPlanNo,
+                    seqNo: seqNo,
+                    title: planTitle.value,
+                    contentId: travel.contentId,
+                })
+                seqNo++;
+            });
+        
+            planCombined.planUserList.push({
+                planNo: lastPlanNo,
+                userId: userId,
+            })
+                
+            console.log(planCombined);
+        
+            addPlan(
+                planCombined,
+                ()=>{
+                    console.log("완료");
+                },
+                (error)=>{
+                    console.log(error);
+                }
+            )
+        },
+        (error)=>{
+            console.log(error)
+        }
+    );
+
+}
+
 </script>
   
 <style scoped>
+
+.plan-title {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.plan-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
   
 .travel-planner {
   display: flex;
@@ -265,6 +355,31 @@ const moveCenter = (lat, lng) => {
   flex: 1;
   padding: 20px;
   box-sizing: border-box;
+}
+
+/* Styles for the scrollable container */
+.scrollable-container {
+  max-height: 600px; /* Adjust this value as needed */
+  overflow-y: auto;
+  border: 1px solid #ddd; /* Optional: to visually distinguish the scrollable area */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Additional styles for table and buttons if needed */
+table {
+  width: 100%;
+}
+
+td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+button {
+  margin-top: 10px;
+  margin-right: 5px;
 }
 
 </style>
