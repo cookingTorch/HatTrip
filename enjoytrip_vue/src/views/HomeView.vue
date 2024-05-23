@@ -6,7 +6,7 @@
         <div class="mainContent row align-items-center">
             <div class="me-auto mb-lg-20 mainPhrases col">
                 <div>
-                    지금 <span>Enjoy Trip</span>과 함께 우리지역의 관광지를 알아보고
+                    지금 <span>해트트립</span>과 함께 우리지역의 관광지를 알아보고
                 </div>
                 <div>
                     나만의 여행 계획을 만들어 보세요!!!
