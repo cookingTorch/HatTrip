@@ -76,8 +76,9 @@
 import { getSido, getGugun, getList, getListByPos } from "@/api/attraction.js"
 import { types, displayMarker } from "@/api/map.js"
 import { getLastId, addPlan } from "@/api/plan.js"
-import { ref, onMounted, computed } from "vue"; 
+import { ref, onMounted } from "vue"; 
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 import { useUserStore } from '@/stores/user-store';
 import noImg from '@/assets/img/noImg.jpg';
 
@@ -85,6 +86,7 @@ const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);
 
 const userId = userInfo.value.userId;
+const router = useRouter();
 
 const sidos= ref([]);
 const guguns= ref([]);
@@ -161,7 +163,7 @@ const initMap = () => {
 const searchByCondition = () => {
     console.log("get List ", selectedSido, selectedGugun, selectedType);
     if(!selectedSido || !selectedGugun){
-        alert("다시");
+        alert("Something went wrong. Please check your input and try again. \nIf the problem persists, contact support.");
     } else {
         const search = {
             sido:selectedSido.value,
@@ -211,7 +213,7 @@ const searchByCondition = () => {
                 map.setLevel(7);
             },
             (error) => {
-                console.log(error);
+                alert("검색에 오류가 발생했습니다. 다시 시도해주세요")
             }
         )
     }
@@ -325,6 +327,8 @@ const submitTravelPlan = () => {
                 planCombined,
                 ()=>{
                     console.log("완료");
+                    router.push({ name: 'planView' })
+                    alert("여행 계획이 작성되었습니다.")
                 },
                 (error)=>{
                     console.log(error);

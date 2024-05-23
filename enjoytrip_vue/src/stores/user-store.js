@@ -41,6 +41,7 @@ export const useUserStore = defineStore("user", () => {
           isValidToken.value = true;
           sessionStorage.setItem("accessToken", accessToken);
           sessionStorage.setItem("refreshToken", refreshToken);
+          
         }
       },
       (error) => {
@@ -125,6 +126,7 @@ export const useUserStore = defineStore("user", () => {
           console.log("isLogin: ", isLogin.value);
           sessionStorage.removeItem("accessToken");
           sessionStorage.removeItem("refreshToken");
+          alert("로그아웃 되었습니다.")
         } else {
           console.error("유저 정보 없음!!!!");
         }
@@ -147,17 +149,3 @@ export const useUserStore = defineStore("user", () => {
     checkInitialLoginState
   };
 });
-
-// export const useUserStore = defineStore("user", {
-//   state: () => ({
-//     userid: null,
-//     username: null,
-//     useremail: null,
-//   }),
-//   getters: {
-//     isLoggedIn: (state) => {
-//       return state.username != null;
-//     },
-//   },
-//   actions: {},
-// });

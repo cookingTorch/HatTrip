@@ -14,32 +14,37 @@
         </div>
         <div>
           <div>
-            <table class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">글번호</th>
-                  <th scope="col">제목</th>
-                </tr>
-              </thead>
-              <tbody id="travelInfoTable">
-                <tr v-for="plan in plans" :key="plan.planNo">
-                  <td><router-link
+            <div v-if="plans && plans.length > 0">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">글번호</th>
+                    <th scope="col">제목</th>
+                  </tr>
+                </thead>
+                <tbody id="travelInfoTable">
+                  <tr v-for="plan in plans" :key="plan.planNo">
+                    <td><router-link
                       :to="{ name: 'planDetail', params: { planNo: plan.planNo } }"
                       class="article-title link-dark"
-                    >
+                      >
                       {{ plan.planNo }}
                     </router-link></td>
-                  <td>
-                    <router-link
+                    <td>
+                      <router-link
                       :to="{ name: 'planDetail', params: { planNo: plan.planNo } }"
                       class="article-title link-dark"
-                    >
+                      >
                       {{ plan.title }}
                     </router-link>
                   </td>
                 </tr>
               </tbody>
             </table>
+            </div>
+            <div v-else>
+              <h1 style="text-align: center;">아직 작성한 여행계획이 없습니다.</h1>
+            </div>
           </div>
         </div>
       </div>
@@ -55,12 +60,9 @@ import { useUserStore } from '@/stores/user-store';
 
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);
-const { isLogin } = storeToRefs(userStore);
 
 const userId = userInfo.value.userId;
-  
-const router = useRouter();
-  
+    
 const plans = ref([]);
 
 onMounted(() => {
@@ -77,7 +79,7 @@ const getPlanList = () => {
         console.log(data);
       },
       (error) => {
-        console.log(error);
+        
       }
     );
 };
