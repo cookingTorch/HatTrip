@@ -2,9 +2,6 @@
     <div :class="type==='attraction' ? 'container' : 'travel-planner'">
         <div :class="type==='attraction' ? 'col-md-12 justify-content-center' : 'col-md-6 flex'">
             <div class="mt-3 text-center fw-bold" style="font-size: 2rem;">
-            <div v-if="type === 'plan'">
-                여행 계획 설정
-            </div>
             </div>
             <div class="row">
             <form id="form-search" class="d-flex" @submit.prevent="search">
@@ -49,8 +46,8 @@
             <div style="height:100px">
                 <input type="text" class="plan-title" v-model="planTitle" placeholder="여행계획 제목">
                 <div class="plan-buttons">
-                    <button @click="clearTravelPlan">초기화</button>
-                    <button @click="submitTravelPlan">제출</button>
+                    <button class="btn btn-outline-danger me-2" @click="clearTravelPlan">초기화</button>
+                    <button class="btn btn-outline-primary" @click="submitTravelPlan">제출</button>
                 </div>
             </div>
             <div class="scrollable-container">
@@ -388,9 +385,8 @@ td {
   vertical-align: middle;
 }
 
-button {
-  margin-top: 10px;
-  margin-right: 5px;
+.btn {
+  white-space: nowrap; /* 텍스트가 줄바뀜 없이 한 줄로 표시되도록 설정 */
 }
 
 </style>
