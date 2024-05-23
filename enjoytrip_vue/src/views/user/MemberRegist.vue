@@ -5,11 +5,11 @@
         <MemberFormItem type="regist"/>
       </div>
     </div>
-  </template>
+</template>
   
-  <script setup>
+<script setup>
   import MemberFormItem from "./item/MemberFormItem.vue";
-  </script>
+</script>
   
-  <style scoped>
-  </style>
+<style scoped>
+</style>

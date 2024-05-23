@@ -102,7 +102,7 @@ export const useUserStore = defineStore("user", () => {
               userInfo.value = null;
               isValidToken.value = false;
               await router.push({ name: "login" });
-              alert("로그인 기간 만료!!! 다시 로그인해 주세요.");
+              alert("세션이 만료되었습니다. 다시 로그인해 주세요.");
             },
             (error) => {
               isLogin.value = false;

@@ -24,7 +24,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue"
 import { storeToRefs } from "pinia";
-import { useRoute, useRouter } from "vue-router"
+import { useRouter } from "vue-router"
 import { useUserStore } from "@/stores/user-store.js"
 import { joinMember, modifyMember } from '@/api/member.js';
 
@@ -56,15 +56,6 @@ onMounted(() => {
   }
 });
 
-// if (props.type === "modify") {
-
-//   console.log(userInfo.value.username);
-//   isUseId.value= true;
-//   UserData.userId= userStore.userid;
-//   UserData.userName= userStore.username;
-//   UserData.email= userStore.useremail;
-// }
-
 function onSubmit() {
 
   props.type === "regist" ? register() : modify();
@@ -74,11 +65,11 @@ const register = () => {
   joinMember(
     UserData,
     () => {
-      console.log("router push");
       router.push({ name: 'home' });
+      alert("가입이 완료되었습니다. 로그인 해 주세요")
     },
-    (error) => {
-      console.log(error);
+    () => {
+      alert("Something went wrong. Please check your input and try again. \nIf the problem persists, contact support.")
     }
   );
 };
@@ -88,9 +79,10 @@ const modify = () => {
     UserData,
     () => {
       router.push({ name: 'home' });
+      alert("수정이 완료되었습니다.")
     },
-    (error) => {
-      console.log(error);
+    () => {
+      alert("Something went wrong. Please check your input and try again. \nIf the problem persists, contact support.")
     }
   );
 };
