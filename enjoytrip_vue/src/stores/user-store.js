@@ -33,7 +33,6 @@ export const useUserStore = defineStore("user", () => {
       loginUser,
       (response) => {
         if (response.status === httpStatusCode.CREATE) {
-          console.log("로그인 성공!!!!");
           let { data } = response;
           let accessToken = data["access-token"];
           let refreshToken = data["refresh-token"];
@@ -45,11 +44,10 @@ export const useUserStore = defineStore("user", () => {
         }
       },
       (error) => {
-        console.log("로그인 실패!!!!");
+        alert("아이디 또는 비밀번호가 틀렸습니다!")
         isLogin.value = false;
         isLoginError.value = true;
         isValidToken.value = false;
-        console.error(error);
       }
     );
   };
