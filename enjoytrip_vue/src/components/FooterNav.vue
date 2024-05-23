@@ -8,7 +8,8 @@
                 <div class="row">
                     <div class="col-md-2 text-center text-md-start"></div>
                     <div class="col-md-4 text-center text-md-start">
-                        <p class="mb-0">Enjoy! trip © 2024</p>
+                        <img src="../assets/img/hashset.png" alt="" width="60" />
+                        <p class="mb-0">모자가세개면해시셋 © 2024</p>
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <ul class="list-inline mb-0">
