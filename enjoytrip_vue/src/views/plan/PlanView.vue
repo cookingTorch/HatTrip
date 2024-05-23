@@ -43,7 +43,7 @@
             </table>
             </div>
             <div v-else>
-              <h1 style="text-align: center;">아직 작성한 여행계획이 없습니다.</h1>
+              <h1 class="text-secondary" style="text-align: center;">아직 작성한 여행계획이 없습니다.</h1>
             </div>
           </div>
         </div>
