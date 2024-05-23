@@ -17,7 +17,7 @@ const { isLogin } = storeToRefs(userStore);
 const { userLogout } = userStore;
 
 onMounted(() => {
-  if ((!isLogin) && sessionStorage.getItem('accessToken')) {
+  if ((!isLogin.value) && sessionStorage.getItem('accessToken')) {
     userStore.checkInitialLoginState();
   }
 });
