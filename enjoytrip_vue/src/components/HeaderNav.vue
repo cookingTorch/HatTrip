@@ -38,8 +38,7 @@ const logout = () => {
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
         <div class="container">
           <router-link :to="{ name: 'home' }" class="navbar-brand text-primary fw-bold">
-            <img src="../assets/img/ssafy_logo.png" alt="" width="60" />
-            Enjoy Trip
+            <img src="../assets/img/ssafy_logo.png" alt="" width="200" />
           </router-link>
           <button
             class="navbar-toggler"
