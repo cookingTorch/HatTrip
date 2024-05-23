@@ -65,7 +65,7 @@ function writeArticle() {
     article.value,
     (response) => {
       let msg = "글등록 처리시 문제 발생했습니다."
-      if (response.status == 200) msg = "글등록이 완료되었습니다."
+      if (response.status == 200) msg = "새로운 글이 등록되었습니다."
       alert(msg)
       moveList()
     },
@@ -79,7 +79,7 @@ function updateArticle() {
     article.value,
     (response) => {
       let msg = "글수정 처리시 문제 발생했습니다."
-      if (response.status == 200) msg = "글정보 수정이 완료되었습니다."
+      if (response.status == 200) msg = "수정되었습니다."
       alert(msg)
       moveList()
       // router.push({ name: "article-view" });

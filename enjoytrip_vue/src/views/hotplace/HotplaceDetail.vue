@@ -134,16 +134,19 @@ const getBadgeClass = (contentTypeId) => {
 };
 
 function onDeleteHotplace() {
-    deleteHotplace(
-        hotplace.value.hotplaceId,
-        (response) => {
-            if (response.status == 200) moveList();
-            alert("삭제되었습니다.");
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
+    if (confirm("삭제하시겠습니까?")) {
+        deleteHotplace(
+            hotplace.value.hotplaceId,
+            (response) => {
+                if (response.status == 200) moveList();
+                alert("삭제되었습니다.");
+            },
+            (error) => {
+                alert("삭제 중 문제가 발생했습니다.");
+                console.log(error);
+            }
+        );
+    }
 }
 
 const toggleLike = (hotplace) => {
@@ -157,8 +160,10 @@ const toggleLike = (hotplace) => {
                 if (response.status == 200) {
                     console.log("삭제");
                 }
+                hotplace.liked = !hotplace.liked;
             },
             (error) => {
+                alert("취소에 문제가 발생했습니다.");
                 console.log(error);
             }
         );
@@ -172,13 +177,14 @@ const toggleLike = (hotplace) => {
                 if (response.status == 200) {
                     console.log("추가");
                 }
+                hotplace.liked = !hotplace.liked;
             },
             (error) => {
+                alert("추가에 문제가 발생했습니다.");
                 console.log(error);
             }
         );
     }
-    hotplace.liked = !hotplace.liked;  // 직접적으로 객체의 liked 상태를 토글
 };
 </script>
 

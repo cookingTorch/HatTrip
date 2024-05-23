@@ -134,9 +134,9 @@ async function submitForm() {
     registHotplace(
         uploadData,
         (response) => {
-            let msg = "등록 처리시 문제 발생했습니다.";
+            let msg = "등록 중 문제가 발생했습니다.";
             if (response.status == 200) {
-                msg = "핫플레이스 등록이 완료되었습니다.";
+                msg = "핫플레이스가 등록되었습니다.";
                 files.value = [];
                 if (inputPhotoRef.value) {
                     inputPhotoRef.value.value = '';  // 파일 입력 필드 초기화
@@ -150,7 +150,10 @@ async function submitForm() {
             alert(msg);
 
         },
-        (error) => console.log(error)
+        (error) => {
+            console.log(error);
+            alert("등록 중 문제가 발생했습니다.");
+        }
     );
 }
 </script>

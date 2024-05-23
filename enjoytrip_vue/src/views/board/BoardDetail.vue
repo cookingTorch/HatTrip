@@ -144,15 +144,18 @@ function moveModify() {
 function onDeleteArticle() {
   // const { articleno } = route.params;
   console.log(articleno + "번글 삭제하러 가자!!!");
-  deleteArticle(
-    articleno,
-    (response) => {
-      if (response.status == 200) moveList();
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+  if (confirm("삭제하시겠습니까?")) {
+    deleteArticle(
+      articleno,
+      (response) => {
+        if (response.status == 200) moveList();
+        alert("삭제되었습니다.");
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 }
 
 // 댓글창
@@ -190,7 +193,7 @@ const submitComment = () => {
       loadComments(); // 댓글 목록 다시 불러오기
     },
     (error) => {
-      console.error("댓글 등록 시 문제가 발생했습니다.", error);
+      console.error("댓글 등록 중 문제가 발생했습니다.", error);
     }
   );
 };
