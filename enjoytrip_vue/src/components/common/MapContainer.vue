@@ -44,11 +44,11 @@
         </div>
         <div class="col-md-6 flex" v-if="type==='plan'">
             <div style="height:100px">
-                <input type="text" class="plan-title" v-model="planTitle" placeholder="여행계획 제목">
                 <div class="plan-buttons">
                     <button class="btn btn-outline-danger me-2" @click="clearTravelPlan">초기화</button>
                     <button class="btn btn-outline-primary" @click="submitTravelPlan">제출</button>
                 </div>
+                <input type="text" class="plan-title form-control" v-model="planTitle" placeholder="여행계획 제목">
             </div>
             <div class="scrollable-container">
                 <table>
