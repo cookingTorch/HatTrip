@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
                 <div class="d-flex align-items-center">
                     <div>
-                        <img src="../assets/img/hashset.png" alt="" width="80" />
+                        <img src="../assets/img/hashset.png" alt="" width="60" />
                     </div>
                     <div>
                         <p class="ms-3 mb-0">모자가세개면해시셋 © 2024</p>
