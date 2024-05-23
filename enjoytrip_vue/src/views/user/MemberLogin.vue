@@ -38,7 +38,6 @@
   const { userLogin, getUserInfo } = userStore;
 
   onMounted(() => {
-    userStore.userLogout();
   });
 
   const login = async () => {
