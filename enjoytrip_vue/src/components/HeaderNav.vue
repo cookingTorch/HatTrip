@@ -35,7 +35,7 @@ const logout = () => {
 <template>
 <div id="mainNav">
     <!-- 상단 navbar start -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow py-1">
         <div class="container">
           <router-link :to="{ name: 'home' }" class="navbar-brand text-primary fw-bold">
             <img src="../assets/img/ssafy_logo.png" alt="" width="200" />
