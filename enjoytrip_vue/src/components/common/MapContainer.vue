@@ -1,6 +1,6 @@
 <template>
     <div :class="type==='attraction' ? 'container' : 'travel-planner'">
-        <div :class="type==='attraction' ? 'col-md-12 justify-content-center' : 'col-md-6 flex'">
+        <div :class="type==='attraction' ? 'col-md-12 justify-content-center' : 'col-md-6 flex pt-0'">
             <div class="mt-3 text-center fw-bold" style="font-size: 2rem;">
             </div>
             <div class="row">
@@ -42,9 +42,9 @@
             </table>
             </div>
         </div>
-        <div class="col-md-6 flex" v-if="type==='plan'">
+        <div class="col-md-6 flex pt-0" v-if="type==='plan'">
             <div style="height:100px">
-                <div class="plan-buttons">
+                <div class="plan-buttons mb-2">
                     <button class="btn btn-outline-danger me-2" @click="clearTravelPlan">초기화</button>
                     <button class="btn btn-outline-primary" @click="submitTravelPlan">제출</button>
                 </div>
@@ -345,13 +345,11 @@ const submitTravelPlan = () => {
 
 .plan-title {
     width: 100%;
-    margin-bottom: 10px;
 }
 
 .plan-buttons {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
 }
   
 .travel-planner {
