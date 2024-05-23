@@ -7,7 +7,7 @@
         <hr class="center-hr">
         <div class="search">
           <div class="search-left">
-            <button type="button" class="btn btn-outline-primary" @click="movePlanCreate">
+            <button type="button" class="btn btn-outline-primary" @click="movePlanCreate()">
               여행계획작성
             </button>
           </div>
@@ -83,6 +83,12 @@ const getPlanList = () => {
       }
     );
 };
+
+const router = useRouter();
+
+const movePlanCreate = () => {
+  router.push({ name : 'planCreate' });
+}
 </script>
   
 <style scoped src="@/assets/css/board.css">
